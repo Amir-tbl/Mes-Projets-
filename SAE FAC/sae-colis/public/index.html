@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tableau de bord — Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="C:\Users\wande\OneDrive\Images\Equipe SAE\USPNLOGO.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+
+      <!-- Slot : en mobile, la barre de recherche est déplacée ici -->
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html" class="active">
+          <span class="icon">🏠</span> Tableau de bord
+          <!-- ⬅️ Remplacer l’emoji par ton icône : <img src="/icons/home.svg" alt=""> -->
+        </a>
+        <a href="creer-envoi.html">
+          <span class="icon">📦</span> Créer un envoie
+          <!-- ⬅️ Icône avion papier -->
+        </a>
+        <a href="historique.html">
+          <span class="icon">🕒</span> Historique
+          <!-- ⬅️ Icône horloge -->
+        </a>
+        <a href="#">
+          <span class="icon">👤</span> Profil
+          <!-- ⬅️ Icône utilisateur -->
+        </a>
+      </nav>
+    </aside>
+
+
+    <!-- Overlay foncé derrière la sidebar en mobile -->
+    <div id="overlay" class="overlay" hidden></div>
+
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+          <!-- ⬅️ Tu peux remplacer par : <img src="/icons/menu.svg" alt=""> -->
+        </button>
+
+
+        <div class="title">TABLEAU DE BORD</div>
+
+
+        <!-- Barre de recherche (réduite si besoin ; déplacée en mobile dans le burger) -->
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un numéro de suivi" aria-label="Rechercher un numéro de suivi">
+        </div>
+      </header>
+
+
+      <section class="content">
+        <!-- KPI Cards -->
+        <div class="kpis">
+          <div class="card kpi">
+            <div class="value">18</div>
+            <div class="label">Colis en cours d’expédition</div>
+          </div>
+          <div class="card kpi">
+            <div class="value">4</div>
+            <div class="label">Colis Livré Aujourd’hui</div>
+          </div>
+          <div class="card kpi">
+            <div class="value">1</div>
+            <div class="label">Livraison retardée</div>
+          </div>
+        </div>
+
+
+        <!-- Historique court + bouton -->
+        <div class="history">
+          <div class="card">
+            <h3>Historique</h3>
+            <div class="meta">Dernière activités :</div>
+            <ul>
+              <li><strong>- Colis #1246</strong> livré avec succès</li>
+              <li class="muted"><strong>- Colis #1245</strong> livré avec succès</li>
+            </ul>
+          </div>
+          <a href="#" class="btn">Consulter l’historique</a>
+        </div>
+
+
+        <!-- Tableau des envois récents -->
+        <div class="tableWrap">
+          <div class="tableCard">
+            <table>
+              <thead>
+                <tr>
+                  <th>Envois</th>
+                  <th>Colis</th>
+                  <th>Date</th>
+                  <th>Statut</th>
+                  <th style="text-align:right; padding-right:24px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Butelle Franck</td>
+                  <td>#1231</td>
+                  <td>25 decembre 2025</td>
+                  <td><span class="badge b-blue">En cours</span></td>
+                  <td style="text-align:right; padding-right:24px"><button class="btn-ghost">Consulter</button></td>
+                </tr>
+                <tr>
+                  <td>Butelle Franck</td>
+                  <td>#1230</td>
+                  <td>25 decembre 2025</td>
+                  <td><span class="badge b-grey">En attente</span></td>
+                  <td style="text-align:right; padding-right:24px"><button class="btn-ghost">Consulter</button></td>
+                </tr>
+                <tr>
+                  <td>Butelle Franck</td>
+                  <td>#1165</td>
+                  <td>23 decembre 2025</td>
+                  <td><span class="badge b-green">Livré</span></td>
+                  <td style="text-align:right; padding-right:24px"><button class="btn-ghost">Consulter</button></td>
+                </tr>
+                <tr>
+                  <td>Butelle Franck</td>
+                  <td>#1098</td>
+                  <td>21 decembre 2025</td>
+                  <td><span class="badge b-red">Retard</span></td>
+                  <td style="text-align:right; padding-right:24px"><button class="btn-ghost">Consulter</button></td>
+                </tr>
+                <tr>
+                  <td>Butelle Franck</td>
+                  <td>#1092</td>
+                  <td>12 decembre 2025</td>
+                  <td><span class="badge b-green">Livré</span></td>
+                  <td style="text-align:right; padding-right:24px"><button class="btn-ghost">Consulter</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+
+  <!-- ATTENTION : le script doit être juste avant </body> -->
+  <script src="assets/js/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Créer un envoi — Étape 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+
+</head>
+<body class="page-wizard">
+  <div class="app">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="C:\Users\wande\OneDrive\Images\Equipe SAE\USPNLOGO.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+
+      </div>
+
+      <!-- Slot : recherche déplacée ici en mobile -->
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+          <!-- ⬅️ Remplacer l’emoji par ton icône -->
+        </a>
+        <a href="creer-envoi.html">
+          <span class="icon">📦</span> Créer un envoi
+        </a>
+        <a href="historique.html">
+          <span class="icon">🕒</span> Historique
+        </a>
+        <a href="#">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Overlay mobile -->
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+          <!-- ⬅️ Vous pouvez mettre votre icône menu.svg -->
+        </button>
+
+        <div class="title">CRÉER UN ENVOI</div>
+
+        <!-- Recherche (déplacée en mobile) -->
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un numéro de suivi" aria-label="Rechercher un numéro de suivi" />
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Stepper -->
+        <div class="wizard-steps card" aria-label="Progression">
+          <div class="step">
+            <span class="step-index">1</span>
+            <span class="step-label">Infos générales</span>
+          </div>
+          <div class="step is-active">
+            <span class="step-index">2</span>
+            <span class="step-label">Fournisseur & Articles</span>
+          </div>
+          <div class="step">
+            <span class="step-index">3</span>
+            <span class="step-label">Livraison & Validation</span>
+          </div>
+        </div>
+
+        <!-- Fournisseur -->
+        <form id="formStep2" class="card wizard-form" novalidate>
+          <fieldset class="field-grid">
+            <legend class="sr-only"></legend>
+
+            <div class="fblock">
+              <label for="supplier">Fournisseur</label>
+              <select id="supplier" required>
+                <option value="">Sélectionner…</option>
+                <option value="Amazon">Amazon</option>
+                <option value="LDLC">LDLC</option>
+                <option value="Darty">Darty</option>
+                <option value="Apple">Apple</option>
+                <option value="HP">HP</option>
+                <option value="Dell">Dell</option>
+                <option value="_other">Autre…</option>
+              </select>
+            </div>
+
+            <div class="fblock">
+              <label for="supplierDelay">Délai moyen (jours) <span class="muted">(optionnel)</span></label>
+              <input id="supplierDelay" type="number" min="0" step="1" placeholder="Ex. 7" />
+            </div>
+
+            <!-- Champs “Autre fournisseur” (affichés quand _other) -->
+            <div class="fblock wide supplier-other" hidden>
+              <label for="supplierName">Nom du fournisseur</label>
+              <input id="supplierName" type="text" placeholder="Renseigner le nom du fournisseur" />
+            </div>
+            <div class="fblock supplier-other" hidden>
+              <label for="supplierEmail">Email fournisseur</label>
+              <input id="supplierEmail" type="email" placeholder="contact@fournisseur.com" />
+            </div>
+            <div class="fblock supplier-other" hidden>
+              <label for="supplierPhone">Téléphone</label>
+              <input id="supplierPhone" type="tel" placeholder="+33 1 23 45 67 89" />
+            </div>
+          </fieldset>
+
+          <!-- Articles -->
+          <div class="card" style="margin-top:16px;">
+            <div class="articlesHeader">
+              <h3 style="margin:0;">Articles</h3>
+              <div class="articlesActions">
+                <button type="button" class="btn" id="btnAddRow">+ Ajouter une ligne</button>
+                <button type="button" class="btn btn-ghost" id="btnClearRows">Vider</button>
+              </div>
+            </div>
+
+            <!-- zone scroll ENTIER sur petit écran -->
+            <div class="articlesWrap">
+              <table id="articlesTable">
+                <thead>
+                  <tr>
+                    <th style="min-width:260px;">Désignation</th>
+                    <th style="min-width:110px;">Quantité</th>
+                    <th style="min-width:140px;">Prix unitaire (€)</th>
+                    <th style="min-width:120px;">TVA (%)</th>
+                    <th style="min-width:140px;">Total ligne (€)</th>
+                    <th style="min-width:110px; text-align:right; padding-right:16px;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="articlesBody">
+                  <!-- Lignes dynamiques insérées par JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Totaux -->
+            <div class="totals">
+              <div class="row">
+                <span>Sous-total HT</span>
+                <strong id="subtotalHT">0,00 €</strong>
+              </div>
+              <div class="row">
+                <span>TVA totale</span>
+                <strong id="totalTVA">0,00 €</strong>
+              </div>
+              <div class="row total">
+                <span>Total TTC</span>
+                <strong id="grandTotal">0,00 €</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Actions -->
+          <div class="wizard-actions">
+            <a href="creer-envoi.html" class="btn btn-ghost" id="btnBack">Retour</a>
+            <button type="button" class="btn btn-ghost" id="btnDraft">Sauvegarder brouillon</button>
+            <button type="submit" class="btn" id="btnNext">Continuer</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/app-creer-step2.js"></script>
+  <script>
+    // 🔗 Step2 -> localStorage : articles + demandeur + livraison + fournisseur
+    (function(){
+      function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+      ready(function(){
+        const form = document.getElementById('formStep2');
+
+        // Utilitaires
+        function parseNumber(txt){
+          if(typeof txt !== 'string') return 0;
+          const clean = txt.replace(/[^\d,.\-]/g,'').replace(',', '.');
+          const n = parseFloat(clean);
+          return isNaN(n) ? 0 : n;
+        }
+        function getVal(el){
+          if(!el) return '';
+          const inp = el.querySelector('input, select, textarea');
+          return (inp ? inp.value : el.value ?? el.textContent ?? '').toString().trim();
+        }
+        function byId(id){ return document.getElementById(id); }
+        function firstVal(...ids){
+          for(const id of ids){
+            const el = byId(id);
+            if(el){ const v = getVal(el); if(v) return v; }
+          }
+          return '';
+        }
+        function toISODateLike(s){
+          // Renvoie s (si déjà yyyy-mm-dd) sinon laisse tel quel
+          return s;
+        }
+
+        // Récupère les lignes du tableau (avec TVA)
+        function getArticlesFromTable(){
+          const table = byId('articlesTable');
+          if(!table) return [];
+          const rows = [...table.querySelectorAll('tbody tr')].filter(r => r.querySelector('td'));
+
+          return rows.map(tr=>{
+            const c1 = tr.querySelector('td:nth-child(1)'); // Désignation
+            const c2 = tr.querySelector('td:nth-child(2)'); // Quantité
+            const c3 = tr.querySelector('td:nth-child(3)'); // PU €
+            const c4 = tr.querySelector('td:nth-child(4)'); // TVA %
+            const c5 = tr.querySelector('td:nth-child(5)'); // Total ligne €
+
+            const name = getVal(c1);
+            const qty  = parseNumber(getVal(c2));
+            const pu   = parseNumber(getVal(c3));
+            const tva  = parseNumber(getVal(c4));
+            let total  = parseNumber(getVal(c5));
+
+            if(!total || total===0){
+              total = qty * pu * (1 + (tva/100));
+            }
+            return { name, qty, pu, tva, total };
+          }).filter(it => it.name);
+        }
+
+        // Demandeur + Livraison souhaitée (essaie plusieurs IDs possibles)
+        function getRequestMeta(){
+          return {
+            demandeur:   firstVal('demandeur','requester','requesterName','fromName'),
+            description: firstVal('description','desc','orderDescription'),
+            livraisonDateEstimee: toISODateLike(firstVal('deliveryDate','livraisonDate','supplierDelayDate')),
+            livraisonLieuSouhaite: firstVal('deliveryPlace','livraisonLieu','toAddress')
+          };
+        }
+
+        // Fournisseur (sélecteur + champs "Autre")
+        function getSupplierMeta(){
+          const supplierSel = byId('supplier');
+          const supplierVal = supplierSel ? supplierSel.value : '';
+          const name = (supplierVal && supplierVal !== '_other')
+            ? supplierVal
+            : firstVal('supplierName');
+
+          return {
+            nom: name || supplierVal || '',
+            delaiMoyenJours: parseNumber(firstVal('supplierDelay')),
+            email: firstVal('supplierEmail'),
+            telephone: firstVal('supplierPhone')
+          };
+        }
+
+        // ...dans ton script Step 2 existant...
+        function saveAll(){
+          // Articles & Fournisseur comme avant
+          localStorage.setItem('wizardItems', JSON.stringify(getArticlesFromTable()));
+
+          const supplier = getSupplierMeta();
+          localStorage.setItem('wizardSupplier', JSON.stringify(supplier));
+
+          // Merge request : on lit l’existant (venu de Step1) et on complète seulement si des valeurs existent en Step2
+          let existingReq = {};
+          try{ existingReq = JSON.parse(localStorage.getItem('wizardRequest') || '{}'); }catch(e){}
+          const fromStep2 = getRequestMeta ? getRequestMeta() : {}; // si tu avais déjà cette fonction
+          const mergedReq = Object.assign({}, existingReq, Object.fromEntries(
+            Object.entries(fromStep2 || {}).filter(([_,v]) => v !== undefined && v !== null && v !== '')
+          ));
+          localStorage.setItem('wizardRequest', JSON.stringify(mergedReq));
+        }
+
+
+        if(form){
+          form.addEventListener('submit', function(e){
+            e.preventDefault();
+            saveAll();
+            window.location.href = 'creer-envoi-step3.html';
+          });
+        }
+      });
+    })();
+  </script>
+
+
+</body>
+</html>

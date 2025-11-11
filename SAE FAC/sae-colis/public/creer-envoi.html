@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Créer un envoi — Étape 1</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+</head>
+<body class="page-wizard">
+  <div class="app">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="C:\Users\wande\OneDrive\Images\Equipe SAE\USPNLOGO.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <!-- Slot : la recherche est déplacée ici en mobile -->
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+          <!-- ⬅️ Remplacez l’emoji par votre icône -->
+        </a>
+        <a href="creer-envoi.html" class="active">
+          <span class="icon">📦</span> Créer un envoi
+        </a>
+        <a href="historique.html">
+          <span class="icon">🕒</span> Historique
+        </a>
+        <a href="#">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Overlay mobile -->
+    <div id="overlay" class="overlay" hidden></div>
+
+    <!-- Main -->
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+          <!-- ⬅️ Vous pouvez mettre votre icône menu.svg -->
+        </button>
+
+        <div class="title">CRÉER UN ENVOI</div>
+
+        <!-- Recherche (sera déplacée en mobile dans la sidebar) -->
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un numéro de suivi" aria-label="Rechercher un numéro de suivi" />
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Stepper -->
+        <div class="wizard-steps card" aria-label="Progression">
+          <div class="step is-active">
+            <span class="step-index">1</span>
+            <span class="step-label">Infos générales</span>
+          </div>
+          <div class="step">
+            <span class="step-index">2</span>
+            <span class="step-label">Fournisseur & Articles</span>
+          </div>
+          <div class="step">
+            <span class="step-index">3</span>
+            <span class="step-label">Livraison & Validation</span>
+          </div>
+        </div>
+
+        <!-- Formulaire Étape 1 -->
+        <form id="formStep1" class="card wizard-form" novalidate>
+          <fieldset class="field-grid">
+            <legend class="sr-only">Informations générales</legend>
+
+            <!-- Demandeur (auto) -->
+            <div class="fblock">
+              <label for="demandeur">Demandeur</label>
+              <input id="demandeur" type="text" value="Butelle Franck" readonly aria-readonly="true" />
+            </div>
+
+            <!-- Département -->
+            <div class="fblock">
+              <label for="departement">Département</label>
+              <select id="departement" required>
+                <option value="">Sélectionner…</option>
+                <option>INFO</option>
+                <option>GEA</option>
+                <option>TC</option>
+                <option>STID</option>
+              </select>
+            </div>
+
+            <!-- Titre de la demande -->
+            <div class="fblock wide">
+              <label for="titre">Titre de la demande</label>
+              <input id="titre" type="text" placeholder="Ex. Poste de travail complet salle B-204" required />
+            </div>
+
+            <!-- Description -->
+            <div class="fblock wide">
+              <label for="description">Description</label>
+              <textarea id="description" rows="4" placeholder="Objectif de l'achat, contexte, précisions utiles…" required></textarea>
+            </div>
+
+            <!-- Budget estimé -->
+            <!-- <div class="fblock">
+              <label for="budget">Budget estimé (€)</label>
+              <input id="budget" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0,00" required />
+            </div> -->
+
+            <!-- Date de livraison souhaitée -->
+            <div class="fblock">
+              <label for="dateSouhaitee">Date livraison souhaitée</label>
+              <input id="dateSouhaitee" type="date" required />
+            </div>
+
+            <!-- Lieu de livraison -->
+            <div class="fblock wide">
+              <label for="lieu">Lieu de livraison</label>
+              <input id="lieu" type="text" placeholder="Ex. Bâtiment A, Bureau 3.12" required />
+            </div>
+
+            <!-- Pièces jointes -->
+            <div class="fblock wide">
+              <label for="pj">Pièces jointes (optionnel)</label>
+              <div class="fileRow">
+                <input id="pj" type="file" multiple />
+                <!-- ⬇️ Vous pouvez mettre une icône d’upload ici depuis votre pack d’icônes -->
+              </div>
+              <small class="muted">Formats acceptés : PDF, PNG, JPG — max 10 Mo par fichier.</small>
+            </div>
+          </fieldset>
+
+          <!-- Actions -->
+          <div class="wizard-actions">
+            <button type="button" class="btn btn-ghost" id="btnCancel">Annuler</button>
+            <button type="button" class="btn btn-ghost" id="btnDraft">Sauvegarder brouillon</button>
+            <button type="submit" class="btn" id="btnNext">Continuer</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="assets/js/app-creer.js"></script>
+  <script>
+  /* Step1 -> localStorage : demandeur, description, livraison (date & lieu) — version robuste */
+  (function(){
+    function ready(fn){ if(document.readyState!=='loading') fn(); else document.addEventListener('DOMContentLoaded', fn); }
+    ready(function(){
+      const form = document.getElementById('formStep1') || document.querySelector('form');
+      const goNextLink = document.querySelector('a[href*="creer-envoi-step2"]');
+      const goNextBtn  = document.getElementById('btnNext') || document.querySelector('[data-next-step]');
+
+      // ------- utils -------
+      const val = el => !el ? '' : (el.value != null ? String(el.value).trim()
+                          : (el.querySelector('input,textarea,select')?.value || el.textContent || '')).trim();
+      const by = sel => document.querySelector(sel);
+      const first = arr => arr.find(Boolean);
+      function firstVal(selectors){
+        for(const sel of selectors){ const v = val(by(sel)); if(v) return v; }
+        return '';
+      }
+      function labelFor(el){
+        if(!el) return '';
+        // label[for=id]
+        if(el.id){
+          const l = document.querySelector(`label[for="${el.id}"]`);
+          if(l) return l.textContent.toLowerCase();
+        }
+        // label juste avant dans un bloc
+        let p = el.previousElementSibling;
+        if(p && p.tagName==='LABEL') return p.textContent.toLowerCase();
+        // cherche un label ancêtre proche
+        const lbl = el.closest('.fblock, .field, .form-group')?.querySelector('label');
+        return lbl ? lbl.textContent.toLowerCase() : '';
+      }
+      function findByLabel(keywords, preferSelector=''){
+        // 1) sélecteur privilégié si fourni
+        if(preferSelector){
+          const cand = by(preferSelector);
+          if(cand) return cand;
+        }
+        // 2) search inputs/textarea/select et matche label
+        const candidates = [...document.querySelectorAll('input, textarea, select')];
+        const keys = keywords.map(k => k.toLowerCase());
+        for(const el of candidates){
+          const txt = labelFor(el);
+          const idn = (el.id || '').toLowerCase();
+          const nm  = (el.name || '').toLowerCase();
+          const ph  = (el.getAttribute('placeholder') || '').toLowerCase();
+          const hay = [txt, idn, nm, ph].join(' ');
+          if(keys.every(k => hay.includes(k))) return el;
+        }
+        return null;
+      }
+
+      // ------- collecte -------
+      function collect(){
+        const demandeur   = firstVal(['#demandeur','#requester','#requesterName','#fromName','[name="demandeur"]','[name="requester"]']);
+        const description = firstVal(['#description','#desc','#orderDescription','[name="description"]','[name="desc"]']);
+
+        // DATE estimée : priorise input[type=date], puis label contenant "date" + "livraison"
+        let dateEl = first([
+          by('input[type="date"]#deliveryDate'),
+          by('input[type="date"]#livraisonDate'),
+          by('input[type="date"][name*="livraison"]'),
+          by('input[type="date"][name*="delivery"]')
+        ]) || findByLabel(['date','livraison']) || findByLabel(['date','estim']);
+        const livraisonDateEstimee = val(dateEl) || firstVal(['#deliveryDate','#livraisonDate','#estimatedDate','[name="deliveryDate"]','[name="livraisonDate"]']);
+
+        // LIEU souhaité : label/fiels avec “lieu/destination/adresse” + “livraison”
+        let lieuEl = first([
+          by('#deliveryPlace'),
+          by('#livraisonLieu'),
+          by('#destination'),
+          by('#toAddress'),
+          by('[name="deliveryPlace"]'),
+          by('[name="livraisonLieu"]'),
+          by('[name="destination"]')
+        ]) || findByLabel(['lieu','livraison'])
+          || findByLabel(['destination'])
+          || findByLabel(['adresse','livraison'])
+          || findByLabel(['adresse','destination']);
+        const livraisonLieuSouhaite = val(lieuEl);
+
+        return { demandeur, description, livraisonDateEstimee, livraisonLieuSouhaite };
+      }
+
+      function mergeSave(obj){
+        let prev = {};
+        try{ prev = JSON.parse(localStorage.getItem('wizardRequest') || '{}'); }catch(e){}
+        const merged = {...prev};
+        Object.entries(obj).forEach(([k,v])=>{
+          if(v !== undefined && v !== null && String(v).trim() !== '') merged[k] = v;
+        });
+        localStorage.setItem('wizardRequest', JSON.stringify(merged));
+      }
+
+      function saveNow(){ mergeSave(collect()); }
+
+      // évènements
+      form && form.addEventListener('submit', saveNow);
+      goNextLink && goNextLink.addEventListener('click', saveNow);
+      goNextBtn && goNextBtn.addEventListener('click', saveNow);
+
+      // Sauvegarde live si l’utilisateur remplit/edite
+      document.addEventListener('change', (e)=>{
+        const t = e.target;
+        if(!(t instanceof HTMLElement)) return;
+        const lbl = labelFor(t);
+        const idn = (t.id||'') + ' ' + (t.name||'') + ' ' + (t.getAttribute('placeholder')||'');
+        const s = (lbl + ' ' + idn).toLowerCase();
+        if(/(livraison|delivery).*(lieu|place|destination|adresse)/.test(s) || /(date).*(livraison|delivery)/.test(s)){
+          saveNow();
+        }
+      });
+    });
+  })();
+</script>
+
+
+
+</body>
+</html>
