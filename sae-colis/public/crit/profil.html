@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Profil — Service Postal CRIT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="reception.html">
+          <span class="icon">📦</span> Réception colis
+        </a>
+        <a href="distribution.html">
+          <span class="icon">🚚</span> Distribution
+        </a>
+        <a href="historique.html">
+          <span class="icon">📋</span> Historique
+        </a>
+        <a href="profil.html" class="active">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">PROFIL</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher" aria-label="Rechercher">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Profil utilisateur -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display: flex; gap: 24px; align-items: start;">
+            <div style="width: 120px; height: 120px; border-radius: 50%; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); display: flex; align-items: center; justify-content: center; color: white; font-size: 48px; font-weight: 700; flex-shrink: 0;">
+              SP
+            </div>
+            <div style="flex: 1;">
+              <h2 style="margin: 0 0 8px 0; color: #1E2A52; font-size: 28px;">Service Postal CRIT</h2>
+              <p style="margin: 0 0 4px 0; color: #64748b; font-size: 16px;">Réception et distribution des colis</p>
+              <p style="margin: 0; color: #94a3b8; font-size: 14px;">crit.postal@univ-paris13.fr</p>
+
+              <div style="margin-top: 16px; padding: 12px; background: #fef3c7; border-left: 4px solid #f59e0b; border-radius: 4px;">
+                <div style="font-weight: 600; color: #92400e; font-size: 14px;">🔒 Rôle : Service Postal</div>
+                <div style="color: #78350f; font-size: 13px; margin-top: 4px;">
+                  Vous gérez la réception et la distribution des colis pour l'IUT de Villetaneuse.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Informations de service -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0;">
+            Informations du service
+          </h3>
+          <div style="display: grid; gap: 16px;">
+            <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+              <span style="font-weight: 600; color: #475569;">Service</span>
+              <span style="color: #1E2A52;">Service Postal CRIT</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+              <span style="font-weight: 600; color: #475569;">Email</span>
+              <span style="color: #1E2A52;">crit.postal@univ-paris13.fr</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+              <span style="font-weight: 600; color: #475569;">Téléphone</span>
+              <span style="color: #1E2A52;">+33 1 49 40 40 50</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+              <span style="font-weight: 600; color: #475569;">Localisation</span>
+              <span style="color: #1E2A52;">Bâtiment A - Rez-de-chaussée</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+              <span style="font-weight: 600; color: #475569;">Horaires</span>
+              <span style="color: #1E2A52;">Lundi - Vendredi : 8h00 - 17h00</span>
+            </div>
+            <div style="display: grid; grid-template-columns: 200px 1fr; gap: 12px; padding: 12px 0;">
+              <span style="font-weight: 600; color: #475569;">Rôle système</span>
+              <span style="color: #1E2A52;">
+                <span style="display: inline-block; padding: 4px 12px; background: #fef3c7; color: #92400e; border-radius: 6px; font-size: 13px; font-weight: 600;">
+                  Service Postal
+                </span>
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Statistiques d'activité -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0;">
+            Statistiques d'activité
+          </h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #3b82f6;">
+              <div style="font-size: 28px; font-weight: 700; color: #1E2A52;">156</div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Colis réceptionnés</div>
+            </div>
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #10b981;">
+              <div style="font-size: 28px; font-weight: 700; color: #1E2A52;">149</div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Colis distribués</div>
+            </div>
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #f59e0b;">
+              <div style="font-size: 28px; font-weight: 700; color: #1E2A52;">1,2 j</div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Délai moyen distribution</div>
+            </div>
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #ef4444;">
+              <div style="font-size: 28px; font-weight: 700; color: #1E2A52;">3</div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Anomalies signalées</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paramètres -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0;">
+            Paramètres
+          </h3>
+          <div style="display: flex; flex-direction: column; gap: 16px;">
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+              <div>
+                <div style="font-weight: 600; color: #1E2A52; margin-bottom: 4px;">Notifications email</div>
+                <div style="font-size: 13px; color: #64748b;">Recevoir un email pour chaque nouveau colis à réceptionner</div>
+              </div>
+              <label style="position: relative; display: inline-block; width: 48px; height: 24px;">
+                <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #2BAE66; transition: 0.4s; border-radius: 24px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);"></span>
+                <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.4s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></span>
+              </label>
+            </div>
+            <div style="display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #f1f5f9;">
+              <div>
+                <div style="font-weight: 600; color: #1E2A52; margin-bottom: 4px;">Récapitulatif quotidien</div>
+                <div style="font-size: 13px; color: #64748b;">Recevoir un résumé quotidien des colis en attente</div>
+              </div>
+              <label style="position: relative; display: inline-block; width: 48px; height: 24px;">
+                <input type="checkbox" checked style="opacity: 0; width: 0; height: 0;">
+                <span style="position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #2BAE66; transition: 0.4s; border-radius: 24px; box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);"></span>
+                <span style="position: absolute; content: ''; height: 18px; width: 18px; left: 3px; bottom: 3px; background-color: white; transition: 0.4s; border-radius: 50%; box-shadow: 0 1px 3px rgba(0,0,0,0.2);"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="card">
+          <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px; padding-bottom: 12px; border-bottom: 2px solid #e2e8f0;">
+            Actions
+          </h3>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button class="btn btn-ghost" style="cursor: not-allowed; opacity: 0.5;" disabled>
+              Modifier le profil
+            </button>
+            <button class="btn btn-ghost">
+              Se déconnecter
+            </button>
+          </div>
+          <p style="margin-top: 12px; font-size: 13px; color: #94a3b8;">
+            Pour modifier les informations du service, contactez le Super Admin.
+          </p>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+</body>
+</html>

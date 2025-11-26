@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>BC à signer — Directeur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="signature.html" class="active">
+          <span class="icon">✍️</span> BC à signer
+        </a>
+        <a href="historique.html">
+          <span class="icon">📋</span> Historique signatures
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">BC À SIGNER</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un BC" aria-label="Rechercher un bon de commande">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Filtres -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+            <div style="flex: 1; min-width: 200px;">
+              <label for="filterDepartement" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Département</label>
+              <select id="filterDepartement" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les départements</option>
+                <option value="Informatique">Informatique</option>
+                <option value="GEA">GEA</option>
+                <option value="TC">TC</option>
+                <option value="GB">GB</option>
+                <option value="Administration">Administration</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+              <label for="filterMontant" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Montant</label>
+              <select id="filterMontant" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les montants</option>
+                <option value="0-1000">0 - 1 000 €</option>
+                <option value="1000-5000">1 000 - 5 000 €</option>
+                <option value="5000-10000">5 000 - 10 000 €</option>
+                <option value="10000+">+ 10 000 €</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+              <label for="filterUrgence" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Priorité</label>
+              <select id="filterUrgence" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Toutes</option>
+                <option value="true">Urgentes uniquement</option>
+                <option value="false">Non urgentes</option>
+              </select>
+            </div>
+            <div style="padding-top: 24px;">
+              <button id="btnResetFilters" class="btn btn-ghost">Réinitialiser</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpis" style="margin-bottom: 20px;">
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">0</div>
+            <div class="label">Total à signer</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiUrgent">0</div>
+            <div class="label">Urgents</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiMontantTotal">0 €</div>
+            <div class="label">Montant total</div>
+          </div>
+        </div>
+
+        <!-- Tableau des BC -->
+        <div class="tableWrap">
+          <table class="dashboardTable">
+            <thead>
+              <tr>
+                <th style="min-width: 130px; width: 130px;">N° BC</th>
+                <th style="min-width: 120px; width: 140px;">Demandeur</th>
+                <th style="min-width: 100px; width: 110px;">Département</th>
+                <th style="min-width: 120px; width: 130px;">Fournisseur</th>
+                <th style="min-width: 100px; width: 110px;">Montant TTC</th>
+                <th style="min-width: 95px; width: 100px;">Date valid.</th>
+                <th style="min-width: 80px; width: 90px;">Attente</th>
+                <th style="min-width: 80px; width: 80px; text-align:center;">PJ</th>
+                <th style="min-width: 180px; width: 180px; text-align:right; padding-right:16px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Rempli dynamiquement par JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal de signature -->
+  <div id="modalSignature" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Signer le bon de commande</h2>
+        <button id="btnCloseModal" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalBCDetails" class="commande-details">
+          <!-- Détails du BC -->
+        </div>
+
+        <div style="margin-top: 24px; padding: 16px; background: #f0f9ff; border-left: 4px solid #0ea5e9; border-radius: 4px;">
+          <div style="font-weight: 600; margin-bottom: 8px; color: #1E2A52;">ℹ️ Information</div>
+          <div style="color: #475569; font-size: 14px;">
+            En signant ce bon de commande, vous autorisez le Service Financier à procéder à l'envoi au fournisseur.
+            Le statut du BC passera à "Prêt à l'envoi".
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <label for="commentaireSignature" style="display: block; margin-bottom: 8px; font-weight: 600;">Commentaire (optionnel)</label>
+          <textarea id="commentaireSignature" rows="3" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;" placeholder="Ajouter une note..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnAnnuler" class="btn btn-ghost">Annuler</button>
+        <button id="btnSigner" class="btn">✍️ Signer le BC</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/commandes-manager.js"></script>
+  <script src="../assets/js/app-directeur-signature.js"></script>
+</body>
+</html>

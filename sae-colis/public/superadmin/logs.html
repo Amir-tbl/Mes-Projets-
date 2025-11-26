@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Logs & Audit — SuperAdmin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="utilisateurs.html">
+          <span class="icon">👥</span> Utilisateurs
+        </a>
+        <a href="commandes.html">
+          <span class="icon">📦</span> Toutes les commandes
+        </a>
+        <a href="fournisseurs.html">
+          <span class="icon">🏢</span> Fournisseurs
+        </a>
+        <a href="logs.html" class="active">
+          <span class="icon">📋</span> Logs & Audit
+        </a>
+        <a href="analytics.html">
+          <span class="icon">📊</span> Statistiques
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">LOGS & AUDIT</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher dans les logs" aria-label="Rechercher dans les logs">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Filtres avancés -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="margin: 0 0 16px 0; font-size: 18px; color: #1E2A52;">🔍 Filtres</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div>
+              <label for="filterTypeAction" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Type d'action</label>
+              <select id="filterTypeAction" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Toutes les actions</option>
+                <option value="connexion">Connexion</option>
+                <option value="deconnexion">Déconnexion</option>
+                <option value="creation">Création</option>
+                <option value="modification">Modification</option>
+                <option value="suppression">Suppression</option>
+                <option value="validation">Validation</option>
+                <option value="signature">Signature</option>
+                <option value="envoi">Envoi</option>
+                <option value="livraison">Livraison</option>
+              </select>
+            </div>
+            <div>
+              <label for="filterUtilisateur" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Utilisateur</label>
+              <select id="filterUtilisateur" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les utilisateurs</option>
+                <option value="butelle">Butelle Franck</option>
+                <option value="martin">Martin Sophie</option>
+                <option value="petit">Petit Laurent</option>
+                <option value="dupont">Dupont Marie</option>
+              </select>
+            </div>
+            <div>
+              <label for="filterRole" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Rôle</label>
+              <select id="filterRole" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les rôles</option>
+                <option value="agent">Agent</option>
+                <option value="service_financier">Service Financier</option>
+                <option value="directeur">Directeur</option>
+                <option value="crit">Service Postal</option>
+                <option value="superadmin">SuperAdmin</option>
+              </select>
+            </div>
+            <div>
+              <label for="filterDateDebut" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Date début</label>
+              <input type="date" id="filterDateDebut" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div>
+              <label for="filterDateFin" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Date fin</label>
+              <input type="date" id="filterDateFin" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div style="display: flex; align-items: flex-end; gap: 8px;">
+              <button id="btnAppliquerFiltres" class="btn" style="flex: 1;">Appliquer</button>
+              <button id="btnResetFiltres" class="btn btn-ghost" style="flex: 1;">Réinitialiser</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpis" style="margin-bottom: 20px;">
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">2 847</div>
+            <div class="label">Total événements</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiAujourdhui">156</div>
+            <div class="label">Aujourd'hui</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiConnexions">89</div>
+            <div class="label">Connexions (24h)</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiModifications">34</div>
+            <div class="label">Modifications (24h)</div>
+          </div>
+        </div>
+
+        <!-- Actions rapides -->
+        <div style="margin-bottom: 16px; display: flex; justify-content: flex-end; gap: 12px;">
+          <button id="btnExportCsv" class="btn btn-ghost">📥 Exporter CSV</button>
+          <button id="btnExportPdf" class="btn btn-ghost">📄 Exporter PDF</button>
+        </div>
+
+        <!-- Tableau des logs -->
+        <div class="tableWrap">
+          <table class="dashboardTable">
+            <thead>
+              <tr>
+                <th style="min-width: 150px; width: 150px;">Date & Heure</th>
+                <th style="min-width: 140px; width: 140px;">Utilisateur</th>
+                <th style="min-width: 110px; width: 110px;">Rôle</th>
+                <th style="min-width: 120px; width: 120px;">Type d'action</th>
+                <th style="min-width: 250px; width: 250px;">Description</th>
+                <th style="min-width: 130px; width: 130px;">Ressource</th>
+                <th style="min-width: 120px; width: 120px;">Adresse IP</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Exemples de logs -->
+              <tr>
+                <td>10/01/25 14:32:45</td>
+                <td><strong>Butelle Franck</strong></td>
+                <td><span class="badge b-blue">Agent</span></td>
+                <td><span class="badge" style="background: #10b981; color: white;">Création</span></td>
+                <td>Création d'une nouvelle commande</td>
+                <td>#BC-2025-1001</td>
+                <td>192.168.1.45</td>
+              </tr>
+              <tr>
+                <td>10/01/25 14:28:12</td>
+                <td><strong>Martin Sophie</strong></td>
+                <td><span class="badge b-green">Service Financier</span></td>
+                <td><span class="badge" style="background: #3b82f6; color: white;">Validation</span></td>
+                <td>Validation de la commande</td>
+                <td>#BC-2025-0998</td>
+                <td>192.168.1.67</td>
+              </tr>
+              <tr>
+                <td>10/01/25 14:15:03</td>
+                <td><strong>Petit Laurent</strong></td>
+                <td><span class="badge" style="background: #667eea; color: white;">Directeur</span></td>
+                <td><span class="badge" style="background: #8b5cf6; color: white;">Signature</span></td>
+                <td>Signature du bon de commande</td>
+                <td>#BC-2025-0985</td>
+                <td>192.168.1.89</td>
+              </tr>
+              <tr>
+                <td>10/01/25 14:05:28</td>
+                <td><strong>Dupont Marie</strong></td>
+                <td><span class="badge" style="background: #f59e0b; color: white;">Service Postal</span></td>
+                <td><span class="badge" style="background: #10b981; color: white;">Livraison</span></td>
+                <td>Colis marqué comme livré</td>
+                <td>#BC-2025-0970</td>
+                <td>192.168.1.102</td>
+              </tr>
+              <tr>
+                <td>10/01/25 13:58:17</td>
+                <td><strong>Admin SuperAdmin</strong></td>
+                <td><span class="badge" style="background: #dc2626; color: white;">SuperAdmin</span></td>
+                <td><span class="badge" style="background: #f59e0b; color: white;">Modification</span></td>
+                <td>Modification des droits utilisateur</td>
+                <td>Utilisateur #23</td>
+                <td>192.168.1.1</td>
+              </tr>
+              <tr>
+                <td>10/01/25 13:45:09</td>
+                <td><strong>Martin Sophie</strong></td>
+                <td><span class="badge b-green">Service Financier</span></td>
+                <td><span class="badge" style="background: #10b981; color: white;">Connexion</span></td>
+                <td>Connexion à l'interface</td>
+                <td>—</td>
+                <td>192.168.1.67</td>
+              </tr>
+              <tr>
+                <td>10/01/25 13:32:54</td>
+                <td><strong>Butelle Franck</strong></td>
+                <td><span class="badge b-blue">Agent</span></td>
+                <td><span class="badge" style="background: #f59e0b; color: white;">Modification</span></td>
+                <td>Modification de la commande (ajout article)</td>
+                <td>#BC-2025-1001</td>
+                <td>192.168.1.45</td>
+              </tr>
+              <tr>
+                <td>10/01/25 13:18:21</td>
+                <td><strong>Ancien Jean</strong></td>
+                <td><span class="badge b-blue">Agent</span></td>
+                <td><span class="badge" style="background: #64748b; color: white;">Déconnexion</span></td>
+                <td>Déconnexion de l'interface</td>
+                <td>—</td>
+                <td>192.168.1.33</td>
+              </tr>
+              <tr>
+                <td>10/01/25 13:05:47</td>
+                <td><strong>Admin SuperAdmin</strong></td>
+                <td><span class="badge" style="background: #dc2626; color: white;">SuperAdmin</span></td>
+                <td><span class="badge" style="background: #10b981; color: white;">Création</span></td>
+                <td>Création d'un nouveau fournisseur</td>
+                <td>Fournisseur #16</td>
+                <td>192.168.1.1</td>
+              </tr>
+              <tr style="background: #fef2f2;">
+                <td>10/01/25 12:58:33</td>
+                <td><strong>Test User</strong></td>
+                <td><span class="badge b-blue">Agent</span></td>
+                <td><span class="badge" style="background: #ef4444; color: white;">Suppression</span></td>
+                <td>Tentative de suppression non autorisée</td>
+                <td>#BC-2025-0999</td>
+                <td>192.168.1.254</td>
+              </tr>
+              <tr>
+                <td>10/01/25 12:45:18</td>
+                <td><strong>Petit Laurent</strong></td>
+                <td><span class="badge" style="background: #667eea; color: white;">Directeur</span></td>
+                <td><span class="badge" style="background: #10b981; color: white;">Connexion</span></td>
+                <td>Connexion à l'interface</td>
+                <td>—</td>
+                <td>192.168.1.89</td>
+              </tr>
+              <tr>
+                <td>10/01/25 12:32:05</td>
+                <td><strong>Dupont Marie</strong></td>
+                <td><span class="badge" style="background: #f59e0b; color: white;">Service Postal</span></td>
+                <td><span class="badge" style="background: #10b981; color: white;">Connexion</span></td>
+                <td>Connexion à l'interface</td>
+                <td>—</td>
+                <td>192.168.1.102</td>
+              </tr>
+              <tr>
+                <td>10/01/25 12:15:42</td>
+                <td><strong>Martin Sophie</strong></td>
+                <td><span class="badge b-green">Service Financier</span></td>
+                <td><span class="badge" style="background: #3b82f6; color: white;">Validation</span></td>
+                <td>Validation de la commande</td>
+                <td>#BC-2025-0987</td>
+                <td>192.168.1.67</td>
+              </tr>
+              <tr>
+                <td>10/01/25 12:02:29</td>
+                <td><strong>Butelle Franck</strong></td>
+                <td><span class="badge b-blue">Agent</span></td>
+                <td><span class="badge" style="background: #10b981; color: white;">Connexion</span></td>
+                <td>Connexion à l'interface</td>
+                <td>—</td>
+                <td>192.168.1.45</td>
+              </tr>
+              <tr>
+                <td>10/01/25 11:48:55</td>
+                <td><strong>Admin SuperAdmin</strong></td>
+                <td><span class="badge" style="background: #dc2626; color: white;">SuperAdmin</span></td>
+                <td><span class="badge" style="background: #10b981; color: white;">Connexion</span></td>
+                <td>Connexion à l'interface</td>
+                <td>—</td>
+                <td>192.168.1.1</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination -->
+        <div style="margin-top: 20px; display: flex; justify-content: center; align-items: center; gap: 16px;">
+          <button class="btn btn-ghost" id="btnPrevious">← Précédent</button>
+          <span style="color: #64748b;">Page <strong>1</strong> sur <strong>19</strong></span>
+          <button class="btn btn-ghost" id="btnNext">Suivant →</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-superadmin-logs.js"></script>
+</body>
+</html>

@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Mon Profil — SuperAdmin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="utilisateurs.html">
+          <span class="icon">👥</span> Utilisateurs
+        </a>
+        <a href="commandes.html">
+          <span class="icon">📦</span> Toutes les commandes
+        </a>
+        <a href="fournisseurs.html">
+          <span class="icon">🏢</span> Fournisseurs
+        </a>
+        <a href="logs.html">
+          <span class="icon">📋</span> Logs & Audit
+        </a>
+        <a href="analytics.html">
+          <span class="icon">📊</span> Statistiques
+        </a>
+        <a href="profil.html" class="active">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">MON PROFIL</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher..." aria-label="Rechercher">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Carte principale du profil -->
+        <div class="card profile-header">
+          <div class="profile-avatar">
+            <div class="avatar-placeholder" style="background: linear-gradient(135deg, #dc2626 0%, #e11d48 100%);">
+              <span class="avatar-initials" id="avatarInitials">SA</span>
+            </div>
+          </div>
+          <div class="profile-info">
+            <h2 class="profile-name" id="profileName">
+              👑 Admin SuperAdmin
+            </h2>
+            <p class="profile-role" id="profileRole" style="color: #dc2626; font-weight: 600;">SuperAdmin — Administrateur Système</p>
+            <p class="profile-email" id="profileEmail">superadmin@univ-paris13.fr</p>
+          </div>
+          <div class="profile-actions">
+            <button class="btn" id="btnLogout">Se déconnecter</button>
+          </div>
+        </div>
+
+        <!-- Grille d'informations -->
+        <div class="profile-grid">
+          <!-- Informations personnelles -->
+          <div class="card profile-section">
+            <h3 class="section-title">Informations personnelles</h3>
+            <dl class="info-list">
+              <div class="info-item">
+                <dt>Nom complet</dt>
+                <dd id="fullName">Admin SuperAdmin</dd>
+              </div>
+              <div class="info-item">
+                <dt>Identifiant</dt>
+                <dd id="studentId">SA-001</dd>
+              </div>
+              <div class="info-item">
+                <dt>Date de création du compte</dt>
+                <dd id="birthDate">1 janvier 2025</dd>
+              </div>
+              <div class="info-item">
+                <dt>Téléphone</dt>
+                <dd id="phone">+33 1 49 40 40 00</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Informations professionnelles -->
+          <div class="card profile-section">
+            <h3 class="section-title">Informations professionnelles</h3>
+            <dl class="info-list">
+              <div class="info-item">
+                <dt>Rôle</dt>
+                <dd id="role" style="color: #dc2626; font-weight: 600;">SuperAdmin</dd>
+              </div>
+              <div class="info-item">
+                <dt>Niveau d'accès</dt>
+                <dd id="accessLevel" style="color: #dc2626; font-weight: 600;">Accès total (root)</dd>
+              </div>
+              <div class="info-item">
+                <dt>Service</dt>
+                <dd id="service">Administration système</dd>
+              </div>
+              <div class="info-item">
+                <dt>Responsabilités</dt>
+                <dd id="responsibilities">Gestion complète de la plateforme SAE-Colis</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Sécurité -->
+          <div class="card profile-section">
+            <h3 class="section-title">Sécurité</h3>
+            <dl class="info-list">
+              <div class="info-item">
+                <dt>Authentification 2FA</dt>
+                <dd id="twoFactorAuth"><span class="badge b-green">Activée</span></dd>
+              </div>
+              <div class="info-item">
+                <dt>Dernière connexion</dt>
+                <dd id="lastLogin">10/01/2025 à 11:48</dd>
+              </div>
+              <div class="info-item">
+                <dt>Adresse IP dernière connexion</dt>
+                <dd id="lastIp">192.168.1.1</dd>
+              </div>
+              <div class="info-item">
+                <dt>Mot de passe modifié</dt>
+                <dd id="passwordChanged">05/01/2025</dd>
+              </div>
+            </dl>
+            <div style="margin-top: 16px;">
+              <button class="btn btn-ghost" id="btnChangePassword">🔐 Changer le mot de passe</button>
+            </div>
+          </div>
+
+          <!-- Statistiques -->
+          <div class="card profile-section">
+            <h3 class="section-title">Statistiques d'administration</h3>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-value" id="statTotal">127</div>
+                <div class="stat-label">Commandes totales</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="statUsers">48</div>
+                <div class="stat-label">Utilisateurs actifs</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="statFournisseurs">15</div>
+                <div class="stat-label">Fournisseurs</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="statLogs">2847</div>
+                <div class="stat-label">Événements logs</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paramètres de compte -->
+        <div class="card profile-settings">
+          <h3 class="section-title">Paramètres du compte</h3>
+          <div class="settings-list">
+            <div class="setting-item">
+              <div class="setting-info">
+                <strong>Notifications par email</strong>
+                <p class="muted">Recevoir des notifications pour les événements système critiques</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notifEmail" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <strong>Notifications push</strong>
+                <p class="muted">Recevoir des notifications en temps réel sur le navigateur</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notifPush" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <strong>Alertes de sécurité</strong>
+                <p class="muted">Recevoir des alertes en cas d'activités suspectes</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notifSecurity" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <strong>Mode développeur</strong>
+                <p class="muted">Activer les outils de débogage et les logs détaillés</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="devMode">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paramètres système -->
+        <div class="card profile-settings">
+          <h3 class="section-title">⚙️ Paramètres système</h3>
+          <div style="display: grid; gap: 12px;">
+            <button class="btn btn-ghost" id="btnSystemSettings">🖥️ Configuration système</button>
+            <button class="btn btn-ghost" id="btnBackup">💾 Sauvegarde & Restauration</button>
+            <button class="btn btn-ghost" id="btnDatabase">🗄️ Gestion base de données</button>
+            <button class="btn btn-ghost" id="btnMaintenance">🔧 Mode maintenance</button>
+          </div>
+        </div>
+
+        <!-- Actions dangereuses -->
+        <div class="card" style="border: 2px solid #dc2626; margin-top: 24px;">
+          <h3 class="section-title" style="color: #dc2626;">⚠️ Zone dangereuse</h3>
+          <p class="muted" style="margin-bottom: 16px;">Ces actions sont irréversibles et peuvent affecter l'ensemble de la plateforme.</p>
+          <div style="display: grid; gap: 12px;">
+            <button class="btn" style="background: #dc2626; color: white;" id="btnResetSystem">🔄 Réinitialiser le système</button>
+            <button class="btn" style="background: #dc2626; color: white;" id="btnDeleteAllLogs">🗑️ Supprimer tous les logs</button>
+            <button class="btn" style="background: #dc2626; color: white;" id="btnFactoryReset">⚠️ Réinitialisation d'usine</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-profil.js"></script>
+</body>
+</html>

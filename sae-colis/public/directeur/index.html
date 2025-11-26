@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Tableau de bord — Directeur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="C:\Users\wande\OneDrive\Images\Equipe SAE\USPNLOGO.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html" class="active">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="signature.html">
+          <span class="icon">✍️</span> BC à signer
+        </a>
+        <a href="historique.html">
+          <span class="icon">📋</span> Historique signatures
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">TABLEAU DE BORD DIRECTEUR</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un BC" aria-label="Rechercher un bon de commande">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Message de bienvenue -->
+        <div class="card" style="margin-bottom: 20px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 24px;">
+          <h2 style="margin: 0 0 8px 0; font-size: 24px;">Bienvenue, Dr. Laurent Petit</h2>
+          <p style="margin: 0; opacity: 0.9; font-size: 15px;">Directeur de l'IUT de Villetaneuse</p>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpis">
+          <div class="card kpi">
+            <div class="value" id="kpiEnAttente">0</div>
+            <div class="label">BC en attente signature</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiSignesAujourdhui">0</div>
+            <div class="label">Signés aujourd'hui</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiSignesMois">0</div>
+            <div class="label">Signés ce mois</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiMontantMois">0 €</div>
+            <div class="label">Montant validé ce mois</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiUrgents">0</div>
+            <div class="label">BC urgents</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">0</div>
+            <div class="label">Total traités</div>
+          </div>
+        </div>
+
+        <!-- Actions rapides -->
+        <div class="card" style="margin-top: 20px;">
+          <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px;">Actions rapides</h3>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="signature.html" class="btn">
+              ✍️ Signer les BC en attente
+            </a>
+            <a href="historique.html" class="btn btn-ghost">
+              📋 Consulter l'historique
+            </a>
+          </div>
+        </div>
+
+        <!-- BC en attente de signature (aperçu) -->
+        <div class="card" style="margin-top: 20px;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+            <h3 style="margin: 0; color: #1E2A52; font-size: 18px;">BC en attente de signature</h3>
+            <a href="signature.html" style="color: #4F46E5; text-decoration: none; font-weight: 600; font-size: 14px;">
+              Voir tout →
+            </a>
+          </div>
+
+          <div class="tableWrap">
+            <table class="dashboardTable">
+              <thead>
+                <tr>
+                  <th style="width: 130px;">N° BC</th>
+                  <th style="width: 140px;">Demandeur</th>
+                  <th style="width: 110px;">Département</th>
+                  <th style="width: 130px;">Fournisseur</th>
+                  <th style="width: 110px;">Montant TTC</th>
+                  <th style="width: 100px;">Date valid.</th>
+                  <th style="width: 80px; text-align:center;">PJ</th>
+                  <th style="width: 120px;">Actions</th>
+                </tr>
+              </thead>
+              <tbody id="tablePreview">
+                <tr>
+                  <td colspan="8" style="text-align: center; padding: 40px; color: #94a3b8;">
+                    Aucun BC en attente de signature
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Statistiques mensuelles -->
+        <div class="card" style="margin-top: 20px;">
+          <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px;">Statistiques du mois</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px;">
+              <div style="font-size: 24px; font-weight: 700; color: #1E2A52;" id="statNbSignatures">0</div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">BC signés</div>
+            </div>
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px;">
+              <div style="font-size: 24px; font-weight: 700; color: #1E2A52;" id="statMontantTotal">0 €</div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Montant total</div>
+            </div>
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px;">
+              <div style="font-size: 24px; font-weight: 700; color: #1E2A52;" id="statDelaiMoyen">0 j</div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Délai moyen signature</div>
+            </div>
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px;">
+              <div style="font-size: 24px; font-weight: 700; color: #1E2A52;" id="statDepartementTop">—</div>
+              <div style="font-size: 13px; color: #64748b; margin-top: 4px;">Département le plus actif</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/commandes-manager.js"></script>
+  <script src="../assets/js/app-directeur.js"></script>
+</body>
+</html>

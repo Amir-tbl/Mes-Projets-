@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Gestion Fournisseurs — SuperAdmin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="utilisateurs.html">
+          <span class="icon">👥</span> Utilisateurs
+        </a>
+        <a href="commandes.html">
+          <span class="icon">📦</span> Toutes les commandes
+        </a>
+        <a href="fournisseurs.html" class="active">
+          <span class="icon">🏢</span> Fournisseurs
+        </a>
+        <a href="logs.html">
+          <span class="icon">📋</span> Logs & Audit
+        </a>
+        <a href="analytics.html">
+          <span class="icon">📊</span> Statistiques
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">GESTION DES FOURNISSEURS</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un fournisseur" aria-label="Rechercher un fournisseur">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Filtres -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; flex: 1;">
+              <div style="flex: 1; min-width: 200px;">
+                <label for="filterCategorie" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Catégorie</label>
+                <select id="filterCategorie" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                  <option value="">Toutes les catégories</option>
+                  <option value="informatique">Informatique</option>
+                  <option value="fournitures">Fournitures</option>
+                  <option value="mobilier">Mobilier</option>
+                  <option value="equipement">Équipement</option>
+                </select>
+              </div>
+              <div style="flex: 1; min-width: 200px;">
+                <label for="filterStatut" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Statut</label>
+                <select id="filterStatut" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                  <option value="">Tous</option>
+                  <option value="actif">Actifs uniquement</option>
+                  <option value="inactif">Inactifs uniquement</option>
+                </select>
+              </div>
+            </div>
+            <div style="padding-top: 24px;">
+              <button id="btnResetFilters" class="btn btn-ghost">Réinitialiser</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpis" style="margin-bottom: 20px;">
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">15</div>
+            <div class="label">Total fournisseurs</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiActifs">13</div>
+            <div class="label">Actifs</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiInactifs">2</div>
+            <div class="label">Inactifs</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiNouveaux">1</div>
+            <div class="label">Nouveaux ce mois</div>
+          </div>
+        </div>
+
+        <!-- Bouton Créer Fournisseur -->
+        <div style="margin-bottom: 16px; display: flex; justify-content: flex-end;">
+          <button id="btnCreerFournisseur" class="btn">➕ Créer un fournisseur</button>
+        </div>
+
+        <!-- Tableau des fournisseurs -->
+        <div class="tableWrap">
+          <table class="dashboardTable">
+            <thead>
+              <tr>
+                <th style="min-width: 180px; width: 180px;">Nom</th>
+                <th style="min-width: 140px; width: 140px;">Catégorie</th>
+                <th style="min-width: 180px; width: 180px;">Contact principal</th>
+                <th style="min-width: 140px; width: 140px;">Téléphone</th>
+                <th style="min-width: 120px; width: 120px;">Nb commandes</th>
+                <th style="min-width: 100px; width: 100px;">Statut</th>
+                <th style="min-width: 180px; width: 180px; text-align:right; padding-right:16px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Exemples de fournisseurs -->
+              <tr>
+                <td><strong>Dell France</strong></td>
+                <td><span class="badge b-blue">Informatique</span></td>
+                <td>commercial@dell.fr</td>
+                <td>01 55 94 70 00</td>
+                <td>34</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirFournisseur(1)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierFournisseur(1)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleFournisseur(1)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>LDLC</strong></td>
+                <td><span class="badge b-blue">Informatique</span></td>
+                <td>entreprise@ldlc.com</td>
+                <td>04 27 86 30 00</td>
+                <td>28</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirFournisseur(2)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierFournisseur(2)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleFournisseur(2)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>HP France</strong></td>
+                <td><span class="badge b-blue">Informatique</span></td>
+                <td>contact@hp.fr</td>
+                <td>01 49 07 50 00</td>
+                <td>22</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirFournisseur(3)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierFournisseur(3)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleFournisseur(3)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Amazon Business</strong></td>
+                <td><span class="badge b-blue">Informatique</span></td>
+                <td>business@amazon.fr</td>
+                <td>0 800 910 280</td>
+                <td>19</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirFournisseur(4)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierFournisseur(4)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleFournisseur(4)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Apple France</strong></td>
+                <td><span class="badge b-blue">Informatique</span></td>
+                <td>enterprise@apple.fr</td>
+                <td>0 805 540 003</td>
+                <td>15</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirFournisseur(5)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierFournisseur(5)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleFournisseur(5)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Bureau Vallée</strong></td>
+                <td><span class="badge" style="background: #f59e0b; color: white;">Fournitures</span></td>
+                <td>pro@bureau-vallee.fr</td>
+                <td>01 46 54 03 90</td>
+                <td>12</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirFournisseur(6)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierFournisseur(6)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleFournisseur(6)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Manutan</strong></td>
+                <td><span class="badge" style="background: #10b981; color: white;">Équipement</span></td>
+                <td>contact@manutan.fr</td>
+                <td>0 825 00 28 82</td>
+                <td>8</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirFournisseur(7)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierFournisseur(7)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleFournisseur(7)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr style="background: #fef2f2;">
+                <td><strong>TechVieux</strong></td>
+                <td><span class="badge b-blue">Informatique</span></td>
+                <td>ancien@techvieux.fr</td>
+                <td>01 XX XX XX XX</td>
+                <td>0</td>
+                <td><span class="badge b-red">Inactif</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirFournisseur(8)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierFournisseur(8)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleFournisseur(8)">🔓</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Créer/Modifier Fournisseur -->
+  <div id="modalFournisseur" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content" style="max-width: 700px;">
+      <div class="modal-header">
+        <h2 id="modalFournisseurTitle">Créer un fournisseur</h2>
+        <button id="btnCloseModalFournisseur" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="formFournisseur" style="display: grid; gap: 16px;">
+          <div>
+            <label for="inputNom" style="display: block; margin-bottom: 4px; font-weight: 600;">Nom du fournisseur *</label>
+            <input type="text" id="inputNom" required style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+          </div>
+
+          <div>
+            <label for="inputCategorie" style="display: block; margin-bottom: 4px; font-weight: 600;">Catégorie *</label>
+            <select id="inputCategorie" required style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+              <option value="">Sélectionner une catégorie</option>
+              <option value="informatique">Informatique</option>
+              <option value="fournitures">Fournitures</option>
+              <option value="mobilier">Mobilier</option>
+              <option value="equipement">Équipement</option>
+            </select>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label for="inputContactEmail" style="display: block; margin-bottom: 4px; font-weight: 600;">Email contact *</label>
+              <input type="email" id="inputContactEmail" required style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div>
+              <label for="inputTelephone" style="display: block; margin-bottom: 4px; font-weight: 600;">Téléphone *</label>
+              <input type="tel" id="inputTelephone" required style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+          </div>
+
+          <div>
+            <label for="inputAdresse" style="display: block; margin-bottom: 4px; font-weight: 600;">Adresse complète</label>
+            <textarea id="inputAdresse" rows="2" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
+          </div>
+
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label for="inputSiret" style="display: block; margin-bottom: 4px; font-weight: 600;">SIRET</label>
+              <input type="text" id="inputSiret" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div>
+              <label for="inputTVA" style="display: block; margin-bottom: 4px; font-weight: 600;">N° TVA Intracommunautaire</label>
+              <input type="text" id="inputTVA" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+          </div>
+
+          <div>
+            <label for="inputSiteWeb" style="display: block; margin-bottom: 4px; font-weight: 600;">Site web</label>
+            <input type="url" id="inputSiteWeb" placeholder="https://" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+          </div>
+
+          <div>
+            <label for="inputNotes" style="display: block; margin-bottom: 4px; font-weight: 600;">Notes</label>
+            <textarea id="inputNotes" rows="3" placeholder="Conditions commerciales, délais de livraison, etc." style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
+          </div>
+
+          <div>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" id="inputActif" checked>
+              <span style="font-weight: 600;">Fournisseur actif</span>
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="btnAnnulerFournisseur" class="btn btn-ghost">Annuler</button>
+        <button id="btnSauvegarderFournisseur" class="btn">💾 Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Détails Fournisseur -->
+  <div id="modalDetailsFournisseur" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content" style="max-width: 700px;">
+      <div class="modal-header">
+        <h2 id="modalDetailsFournisseurTitle">Détails du fournisseur</h2>
+        <button id="btnCloseModalDetailsFournisseur" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalDetailsFournisseurContent">
+          <!-- Détails remplis dynamiquement -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnFermerDetailsFournisseur" class="btn btn-ghost">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-superadmin-fournisseurs.js"></script>
+</body>
+</html>

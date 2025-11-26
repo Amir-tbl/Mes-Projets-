@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Créer un envoi — Étape 3</title>
+
+  <!-- CSS global -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="page-wizard step3">
+  <div class="app">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html"><span class="icon">🏠</span> Tableau de bord</a>
+        <a href="creer-envoi.html"><span class="icon">📦</span> Créer un envoi</a>
+        <a href="historique.html"><span class="icon">🕒</span> Historique</a>
+        <a href="profil.html"><span class="icon">👤</span> Profil</a>
+      </nav>
+    </aside>
+
+    <!-- Overlay (mobile) -->
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">CRÉER UN ENVOI</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un numéro de suivi" aria-label="Rechercher un numéro de suivi" />
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Infos récap issues de Step 2 -->
+        <div class="infoGrid" style="margin-top:12px;">
+        <div class="card infoCard">
+            <h3 class="card-title" style="margin:0 0 8px 0;">Demandeur</h3>
+            <div class="dl-like">
+            <div><span class="dt">Nom :</span> <span class="dd" id="recapDemandeur">—</span></div>
+            <div><span class="dt">Description :</span> <span class="dd" id="recapDescription">—</span></div>
+            </div>
+        </div>
+
+        <div class="card infoCard">
+            <h3 class="card-title" style="margin:0 0 8px 0;">Livraison souhaitée</h3>
+            <div class="dl-like">
+            <div><span class="dt">Date estimée :</span> <span class="dd" id="recapLivraisonDate">—</span></div>
+            <div><span class="dt">Lieu :</span> <span class="dd" id="recapLivraisonLieu">—</span></div>
+            </div>
+        </div>
+
+        <div class="card infoCard">
+            <h3 class="card-title" style="margin:0 0 8px 0;">Fournisseur</h3>
+            <div class="dl-like">
+            <div><span class="dt">Nom :</span> <span class="dd" id="recapFournisseurNom">—</span></div>
+            <div><span class="dt">Délai moyen :</span> <span class="dd" id="recapFournisseurDelai">—</span></div>
+            <div><span class="dt">Email :</span> <span class="dd" id="recapFournisseurEmail">—</span></div>
+            <div><span class="dt">Téléphone :</span> <span class="dd" id="recapFournisseurTel">—</span></div>
+            </div>
+        </div>
+        </div>
+
+        <!-- Stepper -->
+        <div class="wizard-steps card" aria-label="Progression">
+          <div class="step">
+            <span class="step-index">1</span>
+            <span class="step-label">Infos générales</span>
+          </div>
+          <div class="step">
+            <span class="step-index">2</span>
+            <span class="step-label">Fournisseur & Articles</span>
+          </div>
+          <div class="step is-active">
+            <span class="step-index">3</span>
+            <span class="step-label">Récapitulatif</span>
+          </div>
+        </div>
+
+        <!-- Tableau récapitulatif (Article, Qté, PU, TVA%, Total ligne) -->
+        <div class="tableWrap" style="margin-top:12px;">
+          <div class="tableCard">
+            <table class="recapTable" id="recapTable">
+              <thead>
+                <tr>
+                  <th>Article</th>
+                  <th>Qté</th>
+                  <th>PU (€)</th>
+                  <th>TVA (%)</th>
+                  <th>Total ligne (€)</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Lignes injectées par JS depuis localStorage -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Totaux -->
+        <div class="card priceCard" style="margin-top:14px;">
+          <h3 class="card-title" style="margin:0 0 10px 0;">Récapitulatif prix</h3>
+          <div class="priceRow muted"><span>Sous-total HT</span><strong id="subtotalHTView">—</strong></div>
+          <div class="priceRow muted"><span>TVA totale</span><strong id="totalTVAView">—</strong></div>
+          <div class="priceRow total"><span>Total TTC</span><strong id="grandTotalView">—</strong></div>
+        </div>
+
+        <!-- Pièces jointes -->
+        <div class="card" id="piecesJointesSection" style="margin-top:14px; display:none;">
+          <h3 class="card-title" style="margin:0 0 10px 0;">Pièces jointes</h3>
+          <div id="piecesJointesRecap" style="display: grid; gap: 8px;"></div>
+        </div>
+
+        <!-- Validation -->
+        <div class="card" style="margin-top:14px;">
+          <label class="terms" style="display:flex;align-items:center;gap:8px;margin-top:8px;font-size:13px;color:#475169;">
+            <input type="checkbox" id="termsChk"> J'accepte les conditions générales.
+          </label>
+
+          <div class="wizard-actions">
+            <a href="creer-envoi-step2.html" class="btn btn-ghost">← Retour</a>
+            <button id="confirmBtn" class="btn" disabled>Confirmer et créer l'envoi →</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- JS générique -->
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/fournisseurs-manager.js"></script>
+  <script src="../assets/js/commandes-manager.js"></script>
+  <!-- JS Step 3 -->
+  <script src="../assets/js/app-creer-step3.js"></script>
+</body>
+</html>

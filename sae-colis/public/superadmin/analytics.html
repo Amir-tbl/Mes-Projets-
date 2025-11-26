@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Analytics & Statistiques — Superadmin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="utilisateurs.html">
+          <span class="icon">👥</span> Utilisateurs
+        </a>
+        <a href="commandes.html">
+          <span class="icon">📦</span> Toutes les commandes
+        </a>
+        <a href="fournisseurs.html">
+          <span class="icon">🏢</span> Fournisseurs
+        </a>
+        <a href="logs.html">
+          <span class="icon">📋</span> Logs & Audit
+        </a>
+        <a href="analytics.html" class="active">
+          <span class="icon">📊</span> Statistiques
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">ANALYTICS & STATISTIQUES</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher..." aria-label="Rechercher">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Bannière avec période sélectionnée -->
+        <div class="card" style="margin-bottom: 20px; background: linear-gradient(135deg, #ec4899 0%, #8b5cf6 100%); color: white;">
+          <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div>
+              <h2 style="font-size: 24px; margin: 0 0 8px 0;">Vue d'ensemble du système</h2>
+              <p style="margin: 0; opacity: 0.9; font-size: 15px;">Statistiques et performances globales</p>
+            </div>
+            <div>
+              <select id="periodSelector" style="padding: 10px 16px; border: none; border-radius: 8px; font-weight: 600; font-size: 14px; background: rgba(255,255,255,0.2); color: white; backdrop-filter: blur(10px);">
+                <option value="7d">7 derniers jours</option>
+                <option value="30d" selected>30 derniers jours</option>
+                <option value="90d">90 derniers jours</option>
+                <option value="year">Cette année</option>
+                <option value="all">Tout</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPIs globaux -->
+        <div class="kpis">
+          <div class="card kpi">
+            <div class="value" id="kpiTotalCommandes">245</div>
+            <div class="label">Total commandes</div>
+            <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↗ +12% vs période précédente</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiMontantTotal">428 450 €</div>
+            <div class="label">Montant total</div>
+            <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↗ +8.5%</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiTauxValidation">94%</div>
+            <div class="label">Taux de validation</div>
+            <div style="font-size: 12px; color: #ef4444; margin-top: 4px;">↘ -2%</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiDelaiMoyen">4.2 j</div>
+            <div class="label">Délai moyen signature</div>
+            <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↗ Amélioration</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiUtilisateursActifs">48</div>
+            <div class="label">Utilisateurs actifs</div>
+            <div style="font-size: 12px; color: #64748b; margin-top: 4px;">→ Stable</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiFournisseursActifs">15</div>
+            <div class="label">Fournisseurs actifs</div>
+            <div style="font-size: 12px; color: #10b981; margin-top: 4px;">↗ +2</div>
+          </div>
+        </div>
+
+        <!-- Graphiques - Évolution temporelle -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(500px, 1fr)); gap: 20px; margin-top: 24px;">
+          <!-- Graphique commandes -->
+          <div class="card">
+            <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px;">📈 Évolution des commandes</h3>
+            <div style="height: 300px; display: flex; align-items: flex-end; justify-content: space-between; gap: 8px; padding: 20px 0; border-bottom: 2px solid #e5e7eb;">
+              <!-- Barres simulées -->
+              <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); height: 45%; border-radius: 4px 4px 0 0; position: relative;">
+                <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 600; color: #64748b;">12</div>
+                <div style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #94a3b8;">Sem 1</div>
+              </div>
+              <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); height: 62%; border-radius: 4px 4px 0 0; position: relative;">
+                <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 600; color: #64748b;">18</div>
+                <div style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #94a3b8;">Sem 2</div>
+              </div>
+              <div style="flex: 1; background: linear-gradient(to top, #3b82f6, #60a5fa); height: 78%; border-radius: 4px 4px 0 0; position: relative;">
+                <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 600; color: #64748b;">23</div>
+                <div style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #94a3b8;">Sem 3</div>
+              </div>
+              <div style="flex: 1; background: linear-gradient(to top, #10b981, #34d399); height: 95%; border-radius: 4px 4px 0 0; position: relative; box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);">
+                <div style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); font-size: 11px; font-weight: 600; color: #10b981;">28</div>
+                <div style="position: absolute; bottom: -25px; left: 50%; transform: translateX(-50%); font-size: 11px; color: #94a3b8;">Sem 4</div>
+              </div>
+            </div>
+            <div style="margin-top: 30px; font-size: 13px; color: #64748b; text-align: center;">
+              📊 Tendance : <strong style="color: #10b981;">+18% ce mois</strong>
+            </div>
+          </div>
+
+          <!-- Répartition par statut -->
+          <div class="card">
+            <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px;">🎯 Répartition par statut</h3>
+            <div style="display: flex; flex-direction: column; gap: 16px; padding: 20px 0;">
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #64748b; font-weight: 600;">✅ Livrées</span>
+                  <span style="font-size: 14px; font-weight: 700; color: #1E2A52;">98 (40%)</span>
+                </div>
+                <div style="background: #e5e7eb; height: 12px; border-radius: 6px; overflow: hidden;">
+                  <div style="background: linear-gradient(90deg, #10b981, #34d399); width: 40%; height: 100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #64748b; font-weight: 600;">🚚 En cours</span>
+                  <span style="font-size: 14px; font-weight: 700; color: #1E2A52;">75 (31%)</span>
+                </div>
+                <div style="background: #e5e7eb; height: 12px; border-radius: 6px; overflow: hidden;">
+                  <div style="background: linear-gradient(90deg, #3b82f6, #60a5fa); width: 31%; height: 100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #64748b; font-weight: 600;">⏳ En attente</span>
+                  <span style="font-size: 14px; font-weight: 700; color: #1E2A52;">52 (21%)</span>
+                </div>
+                <div style="background: #e5e7eb; height: 12px; border-radius: 6px; overflow: hidden;">
+                  <div style="background: linear-gradient(90deg, #f59e0b, #fbbf24); width: 21%; height: 100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #64748b; font-weight: 600;">⚠️ Retards</span>
+                  <span style="font-size: 14px; font-weight: 700; color: #1E2A52;">12 (5%)</span>
+                </div>
+                <div style="background: #e5e7eb; height: 12px; border-radius: 6px; overflow: hidden;">
+                  <div style="background: linear-gradient(90deg, #ef4444, #f87171); width: 5%; height: 100%;"></div>
+                </div>
+              </div>
+              <div>
+                <div style="display: flex; justify-content: space-between; margin-bottom: 8px;">
+                  <span style="font-size: 14px; color: #64748b; font-weight: 600;">❌ Refusées</span>
+                  <span style="font-size: 14px; font-weight: 700; color: #1E2A52;">8 (3%)</span>
+                </div>
+                <div style="background: #e5e7eb; height: 12px; border-radius: 6px; overflow: hidden;">
+                  <div style="background: linear-gradient(90deg, #991b1b, #dc2626); width: 3%; height: 100%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top départements & Top fournisseurs -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 20px; margin-top: 24px;">
+          <!-- Top départements -->
+          <div class="card">
+            <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px;">🏆 Top départements</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #3b82f6;">
+                <div>
+                  <div style="font-weight: 700; color: #1E2A52;">Informatique</div>
+                  <div style="font-size: 12px; color: #64748b; margin-top: 2px;">89 commandes • 156 450 €</div>
+                </div>
+                <div style="background: #3b82f6; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">1er</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #8b5cf6;">
+                <div>
+                  <div style="font-weight: 700; color: #1E2A52;">GEA</div>
+                  <div style="font-size: 12px; color: #64748b; margin-top: 2px;">67 commandes • 98 230 €</div>
+                </div>
+                <div style="background: #8b5cf6; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">2e</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #f59e0b;">
+                <div>
+                  <div style="font-weight: 700; color: #1E2A52;">TC</div>
+                  <div style="font-size: 12px; color: #64748b; margin-top: 2px;">54 commandes • 87 540 €</div>
+                </div>
+                <div style="background: #f59e0b; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">3e</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px;">
+                <div>
+                  <div style="font-weight: 600; color: #64748b;">GB</div>
+                  <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">35 commandes • 52 230 €</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Top fournisseurs -->
+          <div class="card">
+            <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px;">🏢 Top fournisseurs</h3>
+            <div style="display: flex; flex-direction: column; gap: 12px;">
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #10b981;">
+                <div>
+                  <div style="font-weight: 700; color: #1E2A52;">Dell France</div>
+                  <div style="font-size: 12px; color: #64748b; margin-top: 2px;">42 commandes • Délai: 5.2j • ⭐ 4.8/5</div>
+                </div>
+                <div style="background: #10b981; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">1er</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #06b6d4;">
+                <div>
+                  <div style="font-weight: 700; color: #1E2A52;">LDLC Pro</div>
+                  <div style="font-size: 12px; color: #64748b; margin-top: 2px;">38 commandes • Délai: 4.8j • ⭐ 4.7/5</div>
+                </div>
+                <div style="background: #06b6d4; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">2e</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px; border-left: 4px solid #ec4899;">
+                <div>
+                  <div style="font-weight: 700; color: #1E2A52;">Amazon Business</div>
+                  <div style="font-size: 12px; color: #64748b; margin-top: 2px;">35 commandes • Délai: 3.5j • ⭐ 4.9/5</div>
+                </div>
+                <div style="background: #ec4899; color: white; padding: 4px 12px; border-radius: 20px; font-size: 12px; font-weight: 700;">3e</div>
+              </div>
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 12px; background: #f8fafc; border-radius: 8px;">
+                <div>
+                  <div style="font-weight: 600; color: #64748b;">HP France</div>
+                  <div style="font-size: 12px; color: #94a3b8; margin-top: 2px;">28 commandes • Délai: 6.1j • ⭐ 4.5/5</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Performances par utilisateur -->
+        <div class="card" style="margin-top: 24px;">
+          <h3 style="margin: 0 0 16px 0; color: #1E2A52; font-size: 18px;">👥 Performances par rôle</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 16px;">
+            <div style="padding: 20px; background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%); border-radius: 12px;">
+              <div style="font-size: 14px; color: #1e40af; font-weight: 600; margin-bottom: 8px;">👨‍💼 AGENTS</div>
+              <div style="font-size: 32px; font-weight: 800; color: #1e3a8a; margin-bottom: 4px;">32</div>
+              <div style="font-size: 13px; color: #1e40af;">245 commandes créées</div>
+            </div>
+            <div style="padding: 20px; background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%); border-radius: 12px;">
+              <div style="font-size: 14px; color: #065f46; font-weight: 600; margin-bottom: 8px;">💰 SERVICE FINANCIER</div>
+              <div style="font-size: 32px; font-weight: 800; color: #064e3b; margin-bottom: 4px;">4</div>
+              <div style="font-size: 13px; color: #065f46;">231 validations • Délai moy: 2.1j</div>
+            </div>
+            <div style="padding: 20px; background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%); border-radius: 12px;">
+              <div style="font-size: 14px; color: #9f1239; font-weight: 600; margin-bottom: 8px;">✍️ DIRECTEUR</div>
+              <div style="font-size: 32px; font-weight: 800; color: #881337; margin-bottom: 4px;">1</div>
+              <div style="font-size: 13px; color: #9f1239;">218 signatures • Délai moy: 1.8j</div>
+            </div>
+            <div style="padding: 20px; background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%); border-radius: 12px;">
+              <div style="font-size: 14px; color: #92400e; font-weight: 600; margin-bottom: 8px;">📦 CRIT</div>
+              <div style="font-size: 32px; font-weight: 800; color: #78350f; margin-bottom: 4px;">6</div>
+              <div style="font-size: 13px; color: #92400e;">189 colis réceptionnés</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Alertes et actions -->
+        <div class="card" style="margin-top: 24px; background: #fef2f2; border-left: 4px solid #ef4444;">
+          <h3 style="margin: 0 0 16px 0; color: #dc2626; font-size: 18px;">⚠️ Alertes et points d'attention</h3>
+          <ul style="margin: 0; padding-left: 20px; line-height: 2;">
+            <li><strong>12 commandes en retard</strong> nécessitent un suivi immédiat</li>
+            <li><strong>3 fournisseurs</strong> ont un délai moyen supérieur à 7 jours</li>
+            <li><strong>8 commandes refusées</strong> ce mois (taux: 3.2%)</li>
+            <li><strong>Budget Informatique</strong> à 87% (reste: 24 500 €)</li>
+          </ul>
+          <div style="margin-top: 16px;">
+            <a href="commandes.html?filter=retard" class="btn" style="margin-right: 8px;">Voir les retards</a>
+            <a href="fournisseurs.html?sort=delai" class="btn btn-ghost">Analyser fournisseurs</a>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-superadmin-analytics.js"></script>
+</body>
+</html>

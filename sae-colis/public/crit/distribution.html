@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Distribution colis — Service Postal CRIT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="reception.html">
+          <span class="icon">📦</span> Réception colis
+        </a>
+        <a href="distribution.html" class="active">
+          <span class="icon">🚚</span> Distribution
+        </a>
+        <a href="historique.html">
+          <span class="icon">📋</span> Historique
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">DISTRIBUTION COLIS</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un colis" aria-label="Rechercher un colis">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Filtres -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+            <div style="flex: 1; min-width: 200px;">
+              <label for="filterDepartement" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Département</label>
+              <select id="filterDepartement" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les départements</option>
+                <option value="Informatique">Informatique</option>
+                <option value="GEA">GEA</option>
+                <option value="TC">TC</option>
+                <option value="GB">GB</option>
+                <option value="Administration">Administration</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+              <label for="filterUrgence" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Priorité</label>
+              <select id="filterUrgence" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Toutes</option>
+                <option value="true">En retard (> 2 jours)</option>
+                <option value="false">Normal</option>
+              </select>
+            </div>
+            <div style="padding-top: 24px;">
+              <button id="btnResetFilters" class="btn btn-ghost">Réinitialiser</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpis" style="margin-bottom: 20px;">
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">0</div>
+            <div class="label">Total à distribuer</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiRetard">0</div>
+            <div class="label">En retard (> 2j)</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiDistribuesAujourdhui">0</div>
+            <div class="label">Distribués aujourd'hui</div>
+          </div>
+        </div>
+
+        <!-- Tableau des colis -->
+        <div class="tableWrap">
+          <table class="dashboardTable">
+            <thead>
+              <tr>
+                <th style="width: 130px;">N° Commande</th>
+                <th style="width: 140px;">Destinataire</th>
+                <th style="width: 110px;">Département</th>
+                <th style="width: 130px;">Lieu livraison</th>
+                <th style="width: 100px;">Date récep.</th>
+                <th style="width: 90px;">Attente</th>
+                <th style="min-width: 80px; width: 80px; text-align:center;">PJ</th>
+                <th style="width: 180px; text-align:right; padding-right:16px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Rempli dynamiquement par JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Détails (lecture seule) -->
+  <div id="modalDetails" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalDetailsTitle">Détails du colis</h2>
+        <button id="btnCloseModalDetails" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalDetailsContent" class="commande-details">
+          <!-- Détails du colis -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnFermerDetails" class="btn btn-ghost">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de distribution -->
+  <div id="modalDistribution" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Distribuer le colis</h2>
+        <button id="btnCloseModal" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalColisDetails" class="commande-details">
+          <!-- Détails du colis -->
+        </div>
+
+        <div style="margin-top: 24px; padding: 16px; background: #f0fdf4; border-left: 4px solid #10b981; border-radius: 4px;">
+          <div style="font-weight: 600; margin-bottom: 8px; color: #1E2A52;">✅ Distribution</div>
+          <div style="color: #475569; font-size: 14px;">
+            En confirmant la distribution, vous attestez avoir remis le colis au destinataire ou à son représentant autorisé.
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <label for="nomReceveur" style="display: block; margin-bottom: 4px; font-weight: 600;">Nom du receveur <span style="color: #ef4444;">*</span></label>
+          <input type="text" id="nomReceveur" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;" placeholder="Nom de la personne ayant reçu le colis">
+        </div>
+
+        <div style="margin-top: 16px;">
+          <label for="commentaireDistribution" style="display: block; margin-bottom: 8px; font-weight: 600;">Commentaire (optionnel)</label>
+          <textarea id="commentaireDistribution" rows="3" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;" placeholder="Informations complémentaires..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnAnnuler" class="btn btn-ghost">Annuler</button>
+        <button id="btnConfirmer" class="btn">🚚 Confirmer la distribution</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/commandes-manager.js"></script>
+  <script src="../assets/js/app-crit-distribution.js"></script>
+</body>
+</html>

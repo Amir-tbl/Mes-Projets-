@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>SuperAdmin — SAE-Colis</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="C:\Users\wande\OneDrive\Images\Equipe SAE\USPNLOGO.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html" class="active">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="utilisateurs.html">
+          <span class="icon">👥</span> Utilisateurs
+        </a>
+        <a href="commandes.html">
+          <span class="icon">📦</span> Toutes les commandes
+        </a>
+        <a href="fournisseurs.html">
+          <span class="icon">🏢</span> Fournisseurs
+        </a>
+        <a href="logs.html">
+          <span class="icon">📋</span> Logs & Audit
+        </a>
+        <a href="analytics.html">
+          <span class="icon">📊</span> Statistiques
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">SUPER ADMIN</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher..." aria-label="Rechercher">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Bannière de bienvenue -->
+        <div class="card" style="background: linear-gradient(135deg, #dc2626 0%, #e11d48 100%); color: white; margin-bottom: 24px;">
+          <h2 style="font-size: 24px; margin: 0 0 8px 0;">👑 Bienvenue, SuperAdmin</h2>
+          <p style="margin: 0; opacity: 0.9; font-size: 15px;">Contrôle total de la plateforme SAE-Colis</p>
+        </div>
+
+        <!-- KPI Cards - Vue globale -->
+        <div class="kpis" style="margin-bottom: 24px;">
+          <div class="card kpi">
+            <div class="value" id="kpiTotalCommandes">127</div>
+            <div class="label">Total commandes</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiUtilisateurs">48</div>
+            <div class="label">Utilisateurs actifs</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiMontantTotal">245 680 €</div>
+            <div class="label">Montant total</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiEnCours">23</div>
+            <div class="label">Commandes en cours</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiFournisseurs">15</div>
+            <div class="label">Fournisseurs actifs</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiProblemes">2</div>
+            <div class="label">Alertes système</div>
+          </div>
+        </div>
+
+        <!-- Actions rapides -->
+        <div class="card" style="margin-bottom: 24px;">
+          <h3 style="margin: 0 0 16px 0; font-size: 18px; color: #1E2A52;">⚡ Actions rapides</h3>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="utilisateurs.html" class="btn">👥 Gérer les utilisateurs</a>
+            <a href="commandes.html" class="btn btn-ghost">📦 Voir toutes les commandes</a>
+            <a href="fournisseurs.html" class="btn btn-ghost">🏢 Gérer les fournisseurs</a>
+            <a href="logs.html" class="btn btn-ghost">📋 Consulter les logs</a>
+          </div>
+        </div>
+
+        <!-- Statistiques par rôle -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #1E2A52;">Statistiques par rôle</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div style="padding: 16px; background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); border-radius: 8px; color: white;">
+              <div style="font-size: 12px; opacity: 0.9; margin-bottom: 8px;">AGENTS</div>
+              <div style="font-size: 24px; font-weight: 700;">18 utilisateurs</div>
+              <div style="font-size: 13px; opacity: 0.9; margin-top: 4px;">45 commandes créées</div>
+            </div>
+            <div style="padding: 16px; background: linear-gradient(135deg, #10b981 0%, #059669 100%); border-radius: 8px; color: white;">
+              <div style="font-size: 12px; opacity: 0.9; margin-bottom: 8px;">SERVICE FINANCIER</div>
+              <div style="font-size: 24px; font-weight: 700;">5 utilisateurs</div>
+              <div style="font-size: 13px; opacity: 0.9; margin-top: 4px;">89 validations</div>
+            </div>
+            <div style="padding: 16px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 8px; color: white;">
+              <div style="font-size: 12px; opacity: 0.9; margin-bottom: 8px;">DIRECTEUR</div>
+              <div style="font-size: 24px; font-weight: 700;">1 utilisateur</div>
+              <div style="font-size: 13px; opacity: 0.9; margin-top: 4px;">67 signatures</div>
+            </div>
+            <div style="padding: 16px; background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%); border-radius: 8px; color: white;">
+              <div style="font-size: 12px; opacity: 0.9; margin-bottom: 8px;">SERVICE POSTAL</div>
+              <div style="font-size: 24px; font-weight: 700;">8 utilisateurs</div>
+              <div style="font-size: 13px; opacity: 0.9; margin-top: 4px;">112 distributions</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Statistiques par département -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #1E2A52;">Activité par département</h3>
+          <div class="tableWrap">
+            <table class="dashboardTable">
+              <thead>
+                <tr>
+                  <th style="width: 150px;">Département</th>
+                  <th style="width: 120px;">Utilisateurs</th>
+                  <th style="width: 120px;">Commandes</th>
+                  <th style="width: 130px;">Montant total</th>
+                  <th style="width: 120px;">En cours</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Informatique</strong></td>
+                  <td>12</td>
+                  <td>34</td>
+                  <td>85 450 €</td>
+                  <td><span class="badge b-blue">8</span></td>
+                </tr>
+                <tr>
+                  <td><strong>GEA</strong></td>
+                  <td>8</td>
+                  <td>23</td>
+                  <td>42 300 €</td>
+                  <td><span class="badge b-blue">5</span></td>
+                </tr>
+                <tr>
+                  <td><strong>TC</strong></td>
+                  <td>10</td>
+                  <td>28</td>
+                  <td>56 780 €</td>
+                  <td><span class="badge b-blue">6</span></td>
+                </tr>
+                <tr>
+                  <td><strong>GB</strong></td>
+                  <td>6</td>
+                  <td>18</td>
+                  <td>38 920 €</td>
+                  <td><span class="badge b-blue">3</span></td>
+                </tr>
+                <tr>
+                  <td><strong>Administration</strong></td>
+                  <td>5</td>
+                  <td>15</td>
+                  <td>22 230 €</td>
+                  <td><span class="badge b-blue">1</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Dernières commandes (toutes interfaces) -->
+        <div style="margin-bottom: 24px;">
+          <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #1E2A52;">Dernières commandes (toutes interfaces)</h3>
+          <div class="tableWrap">
+            <table class="dashboardTable">
+              <thead>
+                <tr>
+                  <th style="min-width: 130px; width: 130px;">N° Commande</th>
+                  <th style="min-width: 140px; width: 140px;">Demandeur</th>
+                  <th style="min-width: 110px; width: 110px;">Département</th>
+                  <th style="min-width: 130px; width: 130px;">Fournisseur</th>
+                  <th style="min-width: 110px; width: 110px;">Montant TTC</th>
+                  <th style="min-width: 100px; width: 100px;">Date</th>
+                  <th style="min-width: 120px; width: 120px;">Statut</th>
+                  <th style="min-width: 80px; width: 80px; text-align:center;">PJ</th>
+                  <th style="min-width: 120px; width: 120px; text-align:right; padding-right:16px">Action</th>
+                </tr>
+              </thead>
+              <tbody id="tableDernieresCommandes">
+                <tr>
+                  <td><strong>#BC-2025-1001</strong></td>
+                  <td>Butelle Franck</td>
+                  <td>Informatique</td>
+                  <td>Dell</td>
+                  <td>18 540 €</td>
+                  <td>10/01/25</td>
+                  <td><span class="badge b-blue">En cours</span></td>
+                  <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 2</span></td>
+                  <td style="text-align:right; padding-right:16px"><button class="btn-ghost btn-sm" onclick="afficherDetailsCommande('BC-2025-1001')">👁️ Voir</button></td>
+                </tr>
+                <tr>
+                  <td><strong>#BC-2025-0998</strong></td>
+                  <td>Martin Sophie</td>
+                  <td>GEA</td>
+                  <td>LDLC</td>
+                  <td>2 450 €</td>
+                  <td>08/01/25</td>
+                  <td><span class="badge b-grey">En attente</span></td>
+                  <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 1</span></td>
+                  <td style="text-align:right; padding-right:16px"><button class="btn-ghost btn-sm" onclick="afficherDetailsCommande('BC-2025-0998')">👁️ Voir</button></td>
+                </tr>
+                <tr>
+                  <td><strong>#BC-2025-0985</strong></td>
+                  <td>Dupont Jean</td>
+                  <td>TC</td>
+                  <td>Amazon Business</td>
+                  <td>850 €</td>
+                  <td>05/01/25</td>
+                  <td><span class="badge b-green">Livré</span></td>
+                  <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 3</span></td>
+                  <td style="text-align:right; padding-right:16px"><button class="btn-ghost btn-sm" onclick="afficherDetailsCommande('BC-2025-0985')">👁️ Voir</button></td>
+                </tr>
+                <tr>
+                  <td><strong>#BC-2025-0970</strong></td>
+                  <td>Rousseau Anne</td>
+                  <td>GEA</td>
+                  <td>HP France</td>
+                  <td>3 200 €</td>
+                  <td>02/01/25</td>
+                  <td><span class="badge b-red">Retard</span></td>
+                  <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #f3f4f6; color: #9ca3af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 0</span></td>
+                  <td style="text-align:right; padding-right:16px"><button class="btn-ghost btn-sm" onclick="afficherDetailsCommande('BC-2025-0970')">👁️ Voir</button></td>
+                </tr>
+                <tr>
+                  <td><strong>#BC-2025-0955</strong></td>
+                  <td>Garcia Pablo</td>
+                  <td>Administration</td>
+                  <td>Bureau Vallée</td>
+                  <td>620 €</td>
+                  <td>28/12/24</td>
+                  <td><span class="badge b-green">Livré</span></td>
+                  <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 1</span></td>
+                  <td style="text-align:right; padding-right:16px"><button class="btn-ghost btn-sm" onclick="afficherDetailsCommande('BC-2025-0955')">👁️ Voir</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Statistiques système -->
+        <div>
+          <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #1E2A52;">Statistiques système ce mois</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px;">
+              <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">COMMANDES CRÉÉES</div>
+              <div style="font-size: 24px; font-weight: 700; color: #1E2A52;">67</div>
+            </div>
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px;">
+              <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">COMMANDES VALIDÉES</div>
+              <div style="font-size: 24px; font-weight: 700; color: #1E2A52;">52</div>
+            </div>
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px;">
+              <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">TAUX DE VALIDATION</div>
+              <div style="font-size: 24px; font-weight: 700; color: #1E2A52;">94%</div>
+            </div>
+            <div style="padding: 16px; background: #f8fafc; border-radius: 8px;">
+              <div style="font-size: 12px; color: #64748b; margin-bottom: 8px;">DÉLAI MOYEN TRAITEMENT</div>
+              <div style="font-size: 24px; font-weight: 700; color: #1E2A52;">4,8 j</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Détails Commande -->
+  <div id="modalDetails" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalDetailsTitle">Détails de la commande</h2>
+        <button id="btnCloseModalDetails" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalDetailsContent" class="commande-details">
+          <!-- Détails remplis dynamiquement -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnFermerDetails" class="btn btn-ghost">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-agent.js"></script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Créer un envoi — Étape 2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+
+</head>
+<body class="page-wizard">
+  <div class="app">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <!-- Slot : recherche déplacée ici en mobile -->
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+          <!-- ⬅️ Remplacer l’emoji par ton icône -->
+        </a>
+        <a href="creer-envoi.html">
+          <span class="icon">📦</span> Créer un envoi
+        </a>
+        <a href="historique.html">
+          <span class="icon">🕒</span> Historique
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Overlay mobile -->
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+          <!-- ⬅️ Vous pouvez mettre votre icône menu.svg -->
+        </button>
+
+        <div class="title">CRÉER UN ENVOI</div>
+
+        <!-- Recherche (déplacée en mobile) -->
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un numéro de suivi" aria-label="Rechercher un numéro de suivi" />
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Stepper -->
+        <div class="wizard-steps card" aria-label="Progression">
+          <div class="step">
+            <span class="step-index">1</span>
+            <span class="step-label">Infos générales</span>
+          </div>
+          <div class="step is-active">
+            <span class="step-index">2</span>
+            <span class="step-label">Fournisseur & Articles</span>
+          </div>
+          <div class="step">
+            <span class="step-index">3</span>
+            <span class="step-label">Livraison & Validation</span>
+          </div>
+        </div>
+
+        <!-- Fournisseur -->
+        <form id="formStep2" class="card wizard-form" novalidate>
+          <fieldset class="field-grid">
+            <legend class="sr-only"></legend>
+
+            <div class="fblock">
+              <label for="supplier">Fournisseur</label>
+              <select id="supplier" required>
+                <option value="">Sélectionner…</option>
+                <option value="Amazon">Amazon</option>
+                <option value="LDLC">LDLC</option>
+                <option value="Darty">Darty</option>
+                <option value="Apple">Apple</option>
+                <option value="HP">HP</option>
+                <option value="Dell">Dell</option>
+                <option value="_other">Autre…</option>
+              </select>
+            </div>
+
+            <div class="fblock">
+              <label for="supplierDelay">Délai moyen (jours) <span class="muted">(optionnel)</span></label>
+              <input id="supplierDelay" type="number" min="0" step="1" placeholder="Ex. 7" />
+            </div>
+
+            <!-- Champs fournisseur (toujours visibles, mais readonly si pas "Autre") -->
+            <div class="fblock wide supplier-other">
+              <label for="supplierName">Nom du fournisseur</label>
+              <input id="supplierName" type="text" placeholder="Renseigner le nom du fournisseur" />
+            </div>
+            <div class="fblock supplier-other">
+              <label for="supplierEmail">Email fournisseur</label>
+              <input id="supplierEmail" type="email" placeholder="contact@fournisseur.com" />
+            </div>
+            <div class="fblock supplier-other">
+              <label for="supplierPhone">Téléphone</label>
+              <input id="supplierPhone" type="tel" placeholder="+33 1 23 45 67 89" />
+            </div>
+          </fieldset>
+
+          <!-- Articles -->
+          <div class="card" style="margin-top:16px;">
+            <div class="articlesHeader">
+              <h3 style="margin:0;">Articles</h3>
+              <div class="articlesActions">
+                <button type="button" class="btn" id="btnAddRow">+ Ajouter une ligne</button>
+                <button type="button" class="btn btn-ghost" id="btnClearRows">Vider</button>
+              </div>
+            </div>
+
+            <!-- zone scroll ENTIER sur petit écran -->
+            <div class="articlesWrap">
+              <table id="articlesTable">
+                <thead>
+                  <tr>
+                    <th style="min-width:260px;">Désignation</th>
+                    <th style="min-width:110px;">Quantité</th>
+                    <th style="min-width:140px;">Prix unitaire (€)</th>
+                    <th style="min-width:120px;">TVA (%)</th>
+                    <th style="min-width:140px;">Total ligne (€)</th>
+                    <th style="min-width:110px; text-align:right; padding-right:16px;">Action</th>
+                  </tr>
+                </thead>
+                <tbody id="articlesBody">
+                  <!-- Lignes dynamiques insérées par JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <!-- Totaux -->
+            <div class="totals">
+              <div class="row">
+                <span>Sous-total HT</span>
+                <strong id="subtotalHT">0,00 €</strong>
+              </div>
+              <div class="row">
+                <span>TVA totale</span>
+                <strong id="totalTVA">0,00 €</strong>
+              </div>
+              <div class="row total">
+                <span>Total TTC</span>
+                <strong id="grandTotal">0,00 €</strong>
+              </div>
+            </div>
+          </div>
+
+          <!-- Pièces jointes -->
+          <div class="card" style="margin-top: 16px;">
+            <h3 style="margin: 0 0 12px 0; font-size: 16px; font-weight: 600; color: #1E2A52;">Pièces jointes (optionnel)</h3>
+            <div class="fblock wide">
+              <label for="pj" style="display: block; margin-bottom: 8px; font-weight: 500; color: #475169;">Joindre des documents</label>
+              <div class="fileRow">
+                <input id="pj" type="file" multiple accept=".pdf,.png,.jpg,.jpeg" />
+              </div>
+              <small class="muted" style="display: block; margin-top: 6px; font-size: 13px; color: #94a3b8;">Formats acceptés : PDF, PNG, JPG — max 10 Mo par fichier.</small>
+            </div>
+
+            <!-- Liste des fichiers sélectionnés -->
+            <div id="filesList" style="margin-top: 12px;"></div>
+          </div>
+
+          <!-- Actions -->
+          <div class="wizard-actions">
+            <a href="creer-envoi.html" class="btn btn-ghost" id="btnBack">Retour</a>
+            <button type="button" class="btn btn-ghost" id="btnDraft">Sauvegarder brouillon</button>
+            <button type="submit" class="btn" id="btnNext">Continuer</button>
+          </div>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/fournisseurs-manager.js"></script>
+  <script src="../assets/js/app-creer-step2.js"></script>
+
+
+</body>
+</html>

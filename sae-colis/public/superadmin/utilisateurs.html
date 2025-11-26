@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Gestion Utilisateurs — SuperAdmin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="utilisateurs.html" class="active">
+          <span class="icon">👥</span> Utilisateurs
+        </a>
+        <a href="commandes.html">
+          <span class="icon">📦</span> Toutes les commandes
+        </a>
+        <a href="fournisseurs.html">
+          <span class="icon">🏢</span> Fournisseurs
+        </a>
+        <a href="logs.html">
+          <span class="icon">📋</span> Logs & Audit
+        </a>
+        <a href="analytics.html">
+          <span class="icon">📊</span> Statistiques
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">GESTION DES UTILISATEURS</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un utilisateur" aria-label="Rechercher un utilisateur">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Filtres -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center; justify-content: space-between;">
+            <div style="display: flex; gap: 16px; flex-wrap: wrap; flex: 1;">
+              <div style="flex: 1; min-width: 200px;">
+                <label for="filterRole" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Rôle</label>
+                <select id="filterRole" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                  <option value="">Tous les rôles</option>
+                  <option value="agent">Agent</option>
+                  <option value="service_financier">Service Financier</option>
+                  <option value="directeur">Directeur</option>
+                  <option value="crit">Service Postal (CRIT)</option>
+                  <option value="superadmin">SuperAdmin</option>
+                </select>
+              </div>
+              <div style="flex: 1; min-width: 200px;">
+                <label for="filterDepartement" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Département</label>
+                <select id="filterDepartement" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                  <option value="">Tous les départements</option>
+                  <option value="Informatique">Informatique</option>
+                  <option value="GEA">GEA</option>
+                  <option value="TC">TC</option>
+                  <option value="GB">GB</option>
+                  <option value="Administration">Administration</option>
+                </select>
+              </div>
+              <div style="flex: 1; min-width: 200px;">
+                <label for="filterStatut" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Statut</label>
+                <select id="filterStatut" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                  <option value="">Tous</option>
+                  <option value="actif">Actifs uniquement</option>
+                  <option value="inactif">Inactifs uniquement</option>
+                </select>
+              </div>
+            </div>
+            <div style="padding-top: 24px;">
+              <button id="btnResetFilters" class="btn btn-ghost">Réinitialiser</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpis" style="margin-bottom: 20px;">
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">48</div>
+            <div class="label">Total utilisateurs</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiActifs">45</div>
+            <div class="label">Actifs</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiInactifs">3</div>
+            <div class="label">Inactifs</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiNouveaux">2</div>
+            <div class="label">Nouveaux ce mois</div>
+          </div>
+        </div>
+
+        <!-- Bouton Créer Utilisateur -->
+        <div style="margin-bottom: 16px; display: flex; justify-content: flex-end;">
+          <button id="btnCreerUtilisateur" class="btn">➕ Créer un utilisateur</button>
+        </div>
+
+        <!-- Tableau des utilisateurs -->
+        <div class="tableWrap">
+          <table class="dashboardTable">
+            <thead>
+              <tr>
+                <th style="min-width: 150px; width: 150px;">Nom Prénom</th>
+                <th style="min-width: 180px; width: 180px;">Email</th>
+                <th style="min-width: 140px; width: 140px;">Rôle</th>
+                <th style="min-width: 120px; width: 120px;">Département</th>
+                <th style="min-width: 100px; width: 100px;">Statut</th>
+                <th style="min-width: 110px; width: 110px;">Dernière connexion</th>
+                <th style="min-width: 180px; width: 180px; text-align:right; padding-right:16px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Exemples d'utilisateurs -->
+              <tr>
+                <td><strong>Butelle Franck</strong></td>
+                <td>franck.butelle@univ-paris13.fr</td>
+                <td><span class="badge b-blue">Agent</span></td>
+                <td>Informatique</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td>10/01/25</td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirUtilisateur(1)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierUtilisateur(1)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleUtilisateur(1)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Martin Sophie</strong></td>
+                <td>sophie.martin@univ-paris13.fr</td>
+                <td><span class="badge b-green">Service Financier</span></td>
+                <td>Administration</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td>09/01/25</td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirUtilisateur(2)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierUtilisateur(2)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleUtilisateur(2)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Petit Laurent</strong></td>
+                <td>laurent.petit@univ-paris13.fr</td>
+                <td><span class="badge" style="background: #667eea; color: white;">Directeur</span></td>
+                <td>Direction</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td>10/01/25</td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirUtilisateur(3)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierUtilisateur(3)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleUtilisateur(3)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>Dupont Marie</strong></td>
+                <td>marie.dupont@univ-paris13.fr</td>
+                <td><span class="badge" style="background: #f59e0b; color: white;">Service Postal</span></td>
+                <td>CRIT</td>
+                <td><span class="badge b-green">Actif</span></td>
+                <td>08/01/25</td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirUtilisateur(4)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierUtilisateur(4)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleUtilisateur(4)">🔒</button>
+                  </div>
+                </td>
+              </tr>
+              <tr style="background: #fef2f2;">
+                <td><strong>Ancien Jean</strong></td>
+                <td>jean.ancien@univ-paris13.fr</td>
+                <td><span class="badge b-blue">Agent</span></td>
+                <td>TC</td>
+                <td><span class="badge b-red">Inactif</span></td>
+                <td>15/12/24</td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirUtilisateur(5)">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierUtilisateur(5)">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="toggleUtilisateur(5)">🔓</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Créer/Modifier Utilisateur -->
+  <div id="modalUtilisateur" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content" style="max-width: 600px;">
+      <div class="modal-header">
+        <h2 id="modalUtilisateurTitle">Créer un utilisateur</h2>
+        <button id="btnCloseModalUtilisateur" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="formUtilisateur" style="display: grid; gap: 16px;">
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px;">
+            <div>
+              <label for="inputNom" style="display: block; margin-bottom: 4px; font-weight: 600;">Nom *</label>
+              <input type="text" id="inputNom" required style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div>
+              <label for="inputPrenom" style="display: block; margin-bottom: 4px; font-weight: 600;">Prénom *</label>
+              <input type="text" id="inputPrenom" required style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+          </div>
+
+          <div>
+            <label for="inputEmail" style="display: block; margin-bottom: 4px; font-weight: 600;">Email *</label>
+            <input type="email" id="inputEmail" required style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+          </div>
+
+          <div>
+            <label for="inputRole" style="display: block; margin-bottom: 4px; font-weight: 600;">Rôle *</label>
+            <select id="inputRole" required style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+              <option value="">Sélectionner un rôle</option>
+              <option value="agent">Agent</option>
+              <option value="service_financier">Service Financier</option>
+              <option value="directeur">Directeur</option>
+              <option value="crit">Service Postal (CRIT)</option>
+              <option value="superadmin">SuperAdmin</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="inputDepartement" style="display: block; margin-bottom: 4px; font-weight: 600;">Département</label>
+            <select id="inputDepartement" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+              <option value="">Aucun / Non applicable</option>
+              <option value="Informatique">Informatique</option>
+              <option value="GEA">GEA</option>
+              <option value="TC">TC</option>
+              <option value="GB">GB</option>
+              <option value="Administration">Administration</option>
+              <option value="Direction">Direction</option>
+              <option value="CRIT">CRIT</option>
+            </select>
+          </div>
+
+          <div>
+            <label for="inputPassword" style="display: block; margin-bottom: 4px; font-weight: 600;">Mot de passe temporaire *</label>
+            <input type="password" id="inputPassword" required style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            <div style="font-size: 12px; color: #64748b; margin-top: 4px;">L'utilisateur devra le changer à sa première connexion</div>
+          </div>
+
+          <div>
+            <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+              <input type="checkbox" id="inputActif" checked>
+              <span style="font-weight: 600;">Compte actif</span>
+            </label>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="btnAnnulerUtilisateur" class="btn btn-ghost">Annuler</button>
+        <button id="btnSauvegarderUtilisateur" class="btn">💾 Enregistrer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-superadmin-users.js"></script>
+</body>
+</html>

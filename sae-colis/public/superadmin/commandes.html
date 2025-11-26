@@ -1,0 +1,402 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Toutes les Commandes — SuperAdmin</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <style>
+    /* Style responsive pour le grand tableau */
+    @media (max-width: 1400px) {
+      .content {
+        overflow-x: visible;
+      }
+      .tableWrap {
+        margin-left: -22px;
+        margin-right: -22px;
+        padding-left: 22px;
+        padding-right: 22px;
+        border-left: none;
+        border-right: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="utilisateurs.html">
+          <span class="icon">👥</span> Utilisateurs
+        </a>
+        <a href="commandes.html" class="active">
+          <span class="icon">📦</span> Toutes les commandes
+        </a>
+        <a href="fournisseurs.html">
+          <span class="icon">🏢</span> Fournisseurs
+        </a>
+        <a href="logs.html">
+          <span class="icon">📋</span> Logs & Audit
+        </a>
+        <a href="analytics.html">
+          <span class="icon">📊</span> Statistiques
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">TOUTES LES COMMANDES</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher une commande" aria-label="Rechercher une commande">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Filtres avancés -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="margin: 0 0 16px 0; font-size: 18px; color: #1E2A52;">🔍 Filtres avancés</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+            <div>
+              <label for="filterStatut" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Statut</label>
+              <select id="filterStatut" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les statuts</option>
+                <option value="brouillon">Brouillon</option>
+                <option value="en_attente">En attente</option>
+                <option value="a_valider">À valider</option>
+                <option value="valide">Validé</option>
+                <option value="a_signer">À signer</option>
+                <option value="bc_envoye">BC envoyé</option>
+                <option value="en_cours">En cours</option>
+                <option value="livre">Livré</option>
+                <option value="retard">Retard</option>
+                <option value="annule">Annulé</option>
+              </select>
+            </div>
+            <div>
+              <label for="filterDepartement" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Département</label>
+              <select id="filterDepartement" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les départements</option>
+                <option value="Informatique">Informatique</option>
+                <option value="GEA">GEA</option>
+                <option value="TC">TC</option>
+                <option value="GB">GB</option>
+                <option value="Administration">Administration</option>
+                <option value="Direction">Direction</option>
+              </select>
+            </div>
+            <div>
+              <label for="filterRole" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Interface/Rôle</label>
+              <select id="filterRole" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Toutes les interfaces</option>
+                <option value="agent">Agent</option>
+                <option value="service_financier">Service Financier</option>
+                <option value="directeur">Directeur</option>
+                <option value="crit">Service Postal</option>
+              </select>
+            </div>
+            <div>
+              <label for="filterDateDebut" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Date début</label>
+              <input type="date" id="filterDateDebut" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div>
+              <label for="filterDateFin" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Date fin</label>
+              <input type="date" id="filterDateFin" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div style="display: flex; align-items: flex-end; gap: 8px;">
+              <button id="btnAppliquerFiltres" class="btn" style="flex: 1;">Appliquer</button>
+              <button id="btnResetFiltres" class="btn btn-ghost" style="flex: 1;">Réinitialiser</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpis" style="margin-bottom: 20px;">
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">127</div>
+            <div class="label">Total commandes</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiEnCours">23</div>
+            <div class="label">En cours</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiAValider">12</div>
+            <div class="label">À valider</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiLivrees">78</div>
+            <div class="label">Livrées</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiRetards">3</div>
+            <div class="label">Retards</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiMontantTotal">245 680 €</div>
+            <div class="label">Montant total</div>
+          </div>
+        </div>
+
+        <!-- Actions rapides -->
+        <div style="margin-bottom: 16px; display: flex; justify-content: flex-end; gap: 12px;">
+          <button id="btnExportCsv" class="btn btn-ghost">📥 Exporter CSV</button>
+          <button id="btnExportPdf" class="btn btn-ghost">📄 Exporter PDF</button>
+        </div>
+
+        <!-- Tableau des commandes -->
+        <div class="tableWrap">
+          <table class="dashboardTable" style="min-width: 1200px;">
+            <thead>
+              <tr>
+                <th style="min-width: 120px; width: 120px;">N° Commande</th>
+                <th style="min-width: 130px; width: 130px;">Demandeur</th>
+                <th style="min-width: 100px; width: 100px;">Département</th>
+                <th style="min-width: 120px; width: 120px;">Fournisseur</th>
+                <th style="min-width: 100px; width: 100px;">Montant TTC</th>
+                <th style="min-width: 90px; width: 90px;">Date</th>
+                <th style="min-width: 110px; width: 110px;">Statut</th>
+                <th style="min-width: 70px; width: 70px; text-align:center;">PJ</th>
+                <th style="min-width: 190px; width: 190px; text-align:right; padding-right:16px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Exemples de commandes -->
+              <tr>
+                <td><strong>#BC-2025-1001</strong></td>
+                <td>Butelle Franck</td>
+                <td>Informatique</td>
+                <td>Dell</td>
+                <td>18 540 €</td>
+                <td>10/01/25</td>
+                <td><span class="badge b-blue">En cours</span></td>
+                <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 2</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirCommande('BC-2025-1001')">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierCommande('BC-2025-1001')">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="changerStatut('BC-2025-1001')">🔄</button>
+                    <button class="btn btn-sm btn-ghost" style="color: #dc2626;" onclick="supprimerCommande('BC-2025-1001')">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#BC-2025-0998</strong></td>
+                <td>Martin Sophie</td>
+                <td>GEA</td>
+                <td>LDLC</td>
+                <td>2 450 €</td>
+                <td>08/01/25</td>
+                <td><span class="badge b-grey">À valider</span></td>
+                <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 1</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirCommande('BC-2025-0998')">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierCommande('BC-2025-0998')">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="changerStatut('BC-2025-0998')">🔄</button>
+                    <button class="btn btn-sm btn-ghost" style="color: #dc2626;" onclick="supprimerCommande('BC-2025-0998')">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#BC-2025-0985</strong></td>
+                <td>Dupont Jean</td>
+                <td>TC</td>
+                <td>Amazon Business</td>
+                <td>850 €</td>
+                <td>05/01/25</td>
+                <td><span class="badge b-green">Livré</span></td>
+                <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 3</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirCommande('BC-2025-0985')">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierCommande('BC-2025-0985')">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="changerStatut('BC-2025-0985')">🔄</button>
+                    <button class="btn btn-sm btn-ghost" style="color: #dc2626;" onclick="supprimerCommande('BC-2025-0985')">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#BC-2025-0970</strong></td>
+                <td>Rousseau Anne</td>
+                <td>GEA</td>
+                <td>HP France</td>
+                <td>3 200 €</td>
+                <td>02/01/25</td>
+                <td><span class="badge b-red">Retard</span></td>
+                <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #f3f4f6; color: #9ca3af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 0</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirCommande('BC-2025-0970')">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierCommande('BC-2025-0970')">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="changerStatut('BC-2025-0970')">🔄</button>
+                    <button class="btn btn-sm btn-ghost" style="color: #dc2626;" onclick="supprimerCommande('BC-2025-0970')">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#BC-2025-0955</strong></td>
+                <td>Garcia Pablo</td>
+                <td>Administration</td>
+                <td>Bureau Vallée</td>
+                <td>620 €</td>
+                <td>28/12/24</td>
+                <td><span class="badge b-green">Livré</span></td>
+                <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 1</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirCommande('BC-2025-0955')">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierCommande('BC-2025-0955')">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="changerStatut('BC-2025-0955')">🔄</button>
+                    <button class="btn btn-sm btn-ghost" style="color: #dc2626;" onclick="supprimerCommande('BC-2025-0955')">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#BC-2025-0234</strong></td>
+                <td>Butelle Franck</td>
+                <td>Informatique</td>
+                <td>LDLC</td>
+                <td>2 450 €</td>
+                <td>10/01/25</td>
+                <td><span class="badge b-grey">À valider</span></td>
+                <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 2</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirCommande('BC-2025-0234')">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierCommande('BC-2025-0234')">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="changerStatut('BC-2025-0234')">🔄</button>
+                    <button class="btn btn-sm btn-ghost" style="color: #dc2626;" onclick="supprimerCommande('BC-2025-0234')">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#BC-2025-0233</strong></td>
+                <td>Leblanc Pierre</td>
+                <td>TC</td>
+                <td>Apple</td>
+                <td>3 200 €</td>
+                <td>09/01/25</td>
+                <td><span class="badge b-blue">À signer</span></td>
+                <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 1</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirCommande('BC-2025-0233')">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierCommande('BC-2025-0233')">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="changerStatut('BC-2025-0233')">🔄</button>
+                    <button class="btn btn-sm btn-ghost" style="color: #dc2626;" onclick="supprimerCommande('BC-2025-0233')">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+              <tr>
+                <td><strong>#BC-2024-0845</strong></td>
+                <td>Durant Marie</td>
+                <td>GB</td>
+                <td>HP</td>
+                <td>1 650 €</td>
+                <td>08/01/25</td>
+                <td><span class="badge b-green">BC envoyé</span></td>
+                <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 2</span></td>
+                <td style="text-align:right; padding-right:16px">
+                  <div style="display: flex; gap: 8px; justify-content: flex-end;">
+                    <button class="btn btn-sm btn-ghost" onclick="voirCommande('BC-2024-0845')">👁️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="modifierCommande('BC-2024-0845')">✏️</button>
+                    <button class="btn btn-sm btn-ghost" onclick="changerStatut('BC-2024-0845')">🔄</button>
+                    <button class="btn btn-sm btn-ghost" style="color: #dc2626;" onclick="supprimerCommande('BC-2024-0845')">🗑️</button>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Détails Commande -->
+  <div id="modalDetails" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalDetailsTitle">Détails de la commande</h2>
+        <button id="btnCloseModalDetails" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalDetailsContent" class="commande-details">
+          <!-- Détails remplis dynamiquement -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnFermerDetails" class="btn btn-ghost">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Changer Statut -->
+  <div id="modalStatut" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content" style="max-width: 500px;">
+      <div class="modal-header">
+        <h2 id="modalStatutTitle">Changer le statut</h2>
+        <button id="btnCloseModalStatut" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <form id="formStatut" style="display: grid; gap: 16px;">
+          <div>
+            <label for="inputNouveauStatut" style="display: block; margin-bottom: 4px; font-weight: 600;">Nouveau statut *</label>
+            <select id="inputNouveauStatut" required style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+              <option value="">Sélectionner un statut</option>
+              <option value="brouillon">Brouillon</option>
+              <option value="en_attente">En attente</option>
+              <option value="a_valider">À valider</option>
+              <option value="valide">Validé</option>
+              <option value="a_signer">À signer</option>
+              <option value="bc_envoye">BC envoyé</option>
+              <option value="en_cours">En cours</option>
+              <option value="livre">Livré</option>
+              <option value="retard">Retard</option>
+              <option value="annule">Annulé</option>
+            </select>
+          </div>
+          <div>
+            <label for="inputRaison" style="display: block; margin-bottom: 4px; font-weight: 600;">Raison du changement</label>
+            <textarea id="inputRaison" rows="3" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; resize: vertical;"></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button id="btnAnnulerStatut" class="btn btn-ghost">Annuler</button>
+        <button id="btnConfirmerStatut" class="btn">💾 Confirmer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-agent.js"></script>
+  <script src="../assets/js/app-superadmin-commandes.js"></script>
+</body>
+</html>

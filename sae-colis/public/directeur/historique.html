@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Historique signatures — Directeur</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="signature.html">
+          <span class="icon">✍️</span> BC à signer
+        </a>
+        <a href="historique.html" class="active">
+          <span class="icon">📋</span> Historique signatures
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">HISTORIQUE SIGNATURES</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un BC" aria-label="Rechercher un bon de commande">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Filtres -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+            <div style="flex: 1; min-width: 200px;">
+              <label for="filterPeriode" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Période</label>
+              <select id="filterPeriode" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="all">Toutes les périodes</option>
+                <option value="today">Aujourd'hui</option>
+                <option value="week">Cette semaine</option>
+                <option value="month">Ce mois</option>
+                <option value="year">Cette année</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+              <label for="filterDepartement" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Département</label>
+              <select id="filterDepartement" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les départements</option>
+                <option value="Informatique">Informatique</option>
+                <option value="GEA">GEA</option>
+                <option value="TC">TC</option>
+                <option value="GB">GB</option>
+                <option value="Administration">Administration</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+              <label for="filterStatut" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Statut actuel</label>
+              <select id="filterStatut" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les statuts</option>
+                <option value="signee">Signée (en attente envoi)</option>
+                <option value="bc_envoye">BC envoyé</option>
+                <option value="expediee">Expédiée</option>
+                <option value="livree">Livrée</option>
+                <option value="payee">Payée</option>
+              </select>
+            </div>
+            <div style="padding-top: 24px;">
+              <button id="btnResetFilters" class="btn btn-ghost">Réinitialiser</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpis" style="margin-bottom: 20px;">
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">0</div>
+            <div class="label">Total signés</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiMois">0</div>
+            <div class="label">Signés ce mois</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiMontantTotal">0 €</div>
+            <div class="label">Montant total</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiDelaiMoyen">0 j</div>
+            <div class="label">Délai moyen</div>
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div style="margin-bottom: 16px; display: flex; justify-content: flex-end; gap: 12px;">
+          <button id="btnExportCSV" class="btn btn-ghost">
+            📥 Exporter CSV
+          </button>
+        </div>
+
+        <!-- Tableau de l'historique -->
+        <div class="tableWrap">
+          <table class="dashboardTable">
+            <thead>
+              <tr>
+                <th style="min-width: 130px; width: 130px;">N° BC</th>
+                <th style="min-width: 120px; width: 140px;">Demandeur</th>
+                <th style="min-width: 100px; width: 110px;">Département</th>
+                <th style="min-width: 120px; width: 130px;">Fournisseur</th>
+                <th style="min-width: 100px; width: 110px;">Montant TTC</th>
+                <th style="min-width: 95px; width: 100px;">Date sign.</th>
+                <th style="min-width: 80px; width: 90px;">Délai</th>
+                <th style="min-width: 80px; width: 80px; text-align:center;">PJ</th>
+                <th style="min-width: 110px; width: 120px;">Statut actuel</th>
+                <th style="min-width: 120px; width: 120px; text-align:right; padding-right:16px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Rempli dynamiquement par JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal de détails -->
+  <div id="modalDetails" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Détails du bon de commande</h2>
+        <button id="btnCloseModal" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalBCDetails" class="commande-details">
+          <!-- Détails du BC -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnFermer" class="btn">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/commandes-manager.js"></script>
+  <script src="../assets/js/app-directeur-historique.js"></script>
+</body>
+</html>
