@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tableau de bord — Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <!-- Slot : en mobile, la barre de recherche est déplacée ici -->
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html" class="active">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="creer-envoi.html">
+          <span class="icon">📦</span> Créer un envoi
+        </a>
+        <a href="historique.html">
+          <span class="icon">🕒</span> Historique
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Overlay foncé derrière la sidebar en mobile -->
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">TABLEAU DE BORD</div>
+
+        <!-- Barre de recherche (réduite si besoin ; déplacée en mobile dans le burger) -->
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un numéro de suivi" aria-label="Rechercher un numéro de suivi">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Bannière de bienvenue -->
+        <div class="card" style="background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%); color: white; margin-bottom: 24px;">
+          <h2 style="font-size: 24px; margin: 0 0 8px 0;">Bienvenue, Agent</h2>
+          <p style="margin: 0; opacity: 0.9; font-size: 15px;">Gestion et suivi de vos demandes d'envoi</p>
+        </div>
+
+        <!-- KPI Cards -->
+        <div class="kpis">
+          <div class="card kpi">
+            <div class="value" id="kpiEnCours">3</div>
+            <div class="label">Commandes en cours</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiLivrees">2</div>
+            <div class="label">Commandes livrées</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiRetard">1</div>
+            <div class="label">En retard</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiEnAttente">1</div>
+            <div class="label">En attente de validation</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiCeMois">5</div>
+            <div class="label">Commandes ce mois</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">27 420 €</div>
+            <div class="label">Montant total</div>
+          </div>
+        </div>
+
+        <!-- Actions rapides -->
+        <div class="card" style="margin-top: 24px; margin-bottom: 24px;">
+          <h3 style="margin: 0 0 16px 0; font-size: 18px; color: #1E2A52;">Actions rapides</h3>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <a href="creer-envoi.html" class="btn">📦 Créer une nouvelle commande</a>
+            <a href="historique.html" class="btn btn-ghost">📋 Consulter l'historique</a>
+          </div>
+        </div>
+
+        <!-- Activité récente -->
+        <div class="card" style="margin-bottom: 20px;">
+          <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #1E2A52;">Activité récente</h3>
+          <ul style="margin: 8px 0 0 0; padding-left: 20px; line-height: 1.8;">
+            <li><strong>BC-2025-1001</strong> expédié par Dell France</li>
+            <li class="muted"><strong>BC-2025-0985</strong> livré avec succès</li>
+          </ul>
+        </div>
+
+        <!-- Tableau des commandes récentes -->
+        <div style="margin-top: 20px;">
+          <h3 style="margin: 0 0 12px 0; font-size: 18px; color: #1E2A52;">Vos commandes récentes</h3>
+          <div class="tableWrap">
+            <table class="dashboardTable">
+              <thead>
+                <tr>
+                  <th>N° Commande</th>
+                  <th>Fournisseur</th>
+                  <th>Date</th>
+                  <th>Montant TTC</th>
+                  <th>Statut</th>
+                  <th style="text-align:center;">Pièces jointes</th>
+                  <th style="text-align:right; padding-right:16px">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>BC-2025-1001</strong></td>
+                  <td>Dell France</td>
+                  <td>10/01/2025</td>
+                  <td>18 540,00 €</td>
+                  <td><span class="badge b-blue">En expédition</span></td>
+                  <td style="text-align:center;">
+                    <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                      📎 2
+                    </span>
+                  </td>
+                  <td style="text-align:right; padding-right:16px">
+                    <button class="btn-ghost btn-sm" onclick="afficherDetailsCommande('BC-2025-1001')">Détails</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>BC-2025-0998</strong></td>
+                  <td>LDLC Pro</td>
+                  <td>08/01/2025</td>
+                  <td>2 450,00 €</td>
+                  <td><span class="badge b-grey">En attente</span></td>
+                  <td style="text-align:center;">
+                    <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #f3f4f6; color: #6b7280; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                      📎 0
+                    </span>
+                  </td>
+                  <td style="text-align:right; padding-right:16px">
+                    <button class="btn-ghost btn-sm" onclick="afficherDetailsCommande('BC-2025-0998')">Détails</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>BC-2025-0985</strong></td>
+                  <td>Amazon Business</td>
+                  <td>05/01/2025</td>
+                  <td>850,00 €</td>
+                  <td><span class="badge b-green">Livré</span></td>
+                  <td style="text-align:center;">
+                    <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                      📎 1
+                    </span>
+                  </td>
+                  <td style="text-align:right; padding-right:16px">
+                    <button class="btn-ghost btn-sm" onclick="afficherDetailsCommande('BC-2025-0985')">Détails</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>BC-2025-0970</strong></td>
+                  <td>HP France</td>
+                  <td>02/01/2025</td>
+                  <td>3 200,00 €</td>
+                  <td><span class="badge b-red">Retard</span></td>
+                  <td style="text-align:center;">
+                    <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #f3f4f6; color: #6b7280; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                      📎 0
+                    </span>
+                  </td>
+                  <td style="text-align:right; padding-right:16px">
+                    <button class="btn-ghost btn-sm" onclick="afficherDetailsCommande('BC-2025-0970')">Détails</button>
+                  </td>
+                </tr>
+                <tr>
+                  <td><strong>BC-2025-0955</strong></td>
+                  <td>Bureau Vallée</td>
+                  <td>28/12/2024</td>
+                  <td>620,00 €</td>
+                  <td><span class="badge b-green">Livré</span></td>
+                  <td style="text-align:center;">
+                    <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">
+                      📎 1
+                    </span>
+                  </td>
+                  <td style="text-align:right; padding-right:16px">
+                    <button class="btn-ghost btn-sm" onclick="afficherDetailsCommande('BC-2025-0955')">Détails</button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Détails Commande -->
+  <div id="modalDetails" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalDetailsTitle">Détails de la commande</h2>
+        <button id="btnCloseModalDetails" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalDetailsContent" class="commande-details">
+          <!-- Contenu dynamique injecté par JS -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnFermerDetails" class="btn-ghost">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-agent.js"></script>
+</body>
+</html>

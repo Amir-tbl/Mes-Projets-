@@ -1,0 +1,158 @@
+/* =========================================================
+   STEP 2 — CSS dédié (scopé sur body.page-wizard)
+   À lier après assets/css/styles.css
+========================================================= */
+
+/* ---------- Sécurité & cohérence ---------- */
+.page-wizard, .page-wizard * { box-sizing: border-box; }
+.page-wizard .content, .page-wizard .content * { min-width: 0; }
+.page-wizard .content { padding: 22px; }
+
+/* ---------- Cartes (si tu utilises déjà .card, on complète) ---------- */
+.page-wizard .formCard{
+  background:#fff;
+  border:1px solid rgba(0,0,0,.08);
+  border-radius:16px;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+  padding:18px 20px;
+  display:grid;
+  gap:16px;
+}
+
+/* ---------- Grille de formulaire ---------- */
+.page-wizard .form-grid{
+  display:grid;
+  grid-template-columns: repeat(2, minmax(0,1fr));
+  gap:14px;
+}
+.page-wizard .form-grid .fblock{ display:flex; flex-direction:column; gap:6px; min-width:0; }
+.page-wizard .form-grid label{ font-weight:600; font-size:14px; color:#2A2E3A; }
+
+.page-wizard .form-grid input,
+.page-wizard .form-grid select,
+.page-wizard .form-grid textarea{
+  width:100%;
+  min-width:0;                      /* clé pour Grid/Flex */
+  height:40px;
+  padding:8px 12px;
+  font-size:14px;
+  color:#2A2E3A;
+  background:#fff;
+  border:1px solid #D9DFEA;
+  border-radius:10px;
+  outline:0;
+}
+.page-wizard .form-grid textarea{ height:auto; resize:vertical; min-height:80px; }
+
+/* Focus states doux */
+.page-wizard .form-grid input:focus,
+.page-wizard .form-grid select:focus,
+.page-wizard .form-grid textarea:focus{
+  border-color:#3A6CF0;
+  box-shadow:0 0 0 3px rgba(58,108,240,.12);
+}
+
+/* ---------- Actions ---------- */
+.page-wizard .actions{
+  display:flex;
+  gap:10px;
+  justify-content:flex-end;
+  align-items:center;
+  flex-wrap:wrap;
+}
+.page-wizard .actions .btn,
+.page-wizard .actions .btn-ghost{ height:40px; }
+
+/* ---------- Tables : scroll horizontal + responsive ---------- */
+/* Le scroll horizontal doit être sur le wrapper (un seul conteneur) */
+.page-wizard .tableWrap{
+  width:100%;
+  background:transparent;
+  margin-top:6px;
+  overflow-x:auto !important;       /* 👉 scroll horizontal ici */
+  overflow-y:hidden !important;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-gutter:stable both-edges;
+  padding-bottom:8px;               /* espace pour la barre */
+}
+
+/* Pas de scroll imbriqué dans la carte */
+.page-wizard .tableCard{
+  background:#B79D89;
+  border-radius:18px;
+  border:1px solid rgba(0,0,0,.08);
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+  padding:0;
+  max-width:100%;
+  overflow:visible !important;
+}
+
+/* Table large par défaut : déclenche le scroll si trop de colonnes */
+.page-wizard .tableCard table{
+  width:max(100%, 720px);           /* ≥ 720px sinon 100% */
+  border-collapse:separate;
+  border-spacing:0;
+  table-layout:auto;                /* colonnes adaptatives */
+  min-width:0;                      /* autorise la compression si width:100% */
+}
+
+.page-wizard .tableCard thead{ background:rgba(255,255,255,.38); }
+.page-wizard .tableCard th,
+.page-wizard .tableCard td{
+  padding:14px 18px;
+  text-align:left;
+  white-space:nowrap;               /* desktop: une ligne (lisible) */
+  font-size:14px;
+  color:#1C1F2A;
+}
+.page-wizard .tableCard tbody tr{ background:rgba(255,255,255,.32); }
+.page-wizard .tableCard tbody tr:nth-child(odd){ background:rgba(255,255,255,.14); }
+
+/* Scrollbar esthétique (facultatif) */
+.page-wizard .tableWrap::-webkit-scrollbar{ height:10px; }
+.page-wizard .tableWrap::-webkit-scrollbar-thumb{
+  background:rgba(0,0,0,.35);
+  border-radius:10px;
+}
+.page-wizard .tableWrap::-webkit-scrollbar-track{
+  background:rgba(0,0,0,.1);
+}
+
+/* ---------- Badges statut (si pas hérités du global) ---------- */
+.page-wizard .badge{
+  display:inline-flex; align-items:center; justify-content:center;
+  padding:6px 12px; border-radius:999px; font-weight:700; font-size:12px; color:#fff; min-width:86px;
+}
+.page-wizard .b-blue{ background:#2F80ED; }
+.page-wizard .b-green{ background:#2BAE66; }
+.page-wizard .b-grey{ background:#A0A7B8; }
+.page-wizard .b-red { background:#E5484D; }
+
+/* ---------- Breakpoints ---------- */
+@media (max-width: 992px){
+  .page-wizard .form-grid{ grid-template-columns: 1fr 1fr; } /* explicite */
+}
+
+@media (max-width: 768px){
+  .page-wizard .form-grid{ grid-template-columns: 1fr; }     /* 1 colonne mobile */
+  .page-wizard .actions{ justify-content:stretch; }
+  .page-wizard .actions .btn,
+  .page-wizard .actions .btn-ghost{ flex:1 1 160px; }
+}
+
+/* ✅ Ultra mobile : on autorise la COMPRESSION du texte du tableau
+   au lieu d’un débordement : width:100% + retours à la ligne */
+@media (max-width: 560px){
+  .page-wizard .tableCard table{
+    width:100% !important;          /* prend toute la largeur dispo */
+    table-layout:auto !important;   /* colonnes flexibles */
+    min-width:0 !important;         /* clé en contexte Grid/Flex */
+  }
+  .page-wizard .tableCard th,
+  .page-wizard .tableCard td{
+    white-space:normal !important;  /* autorise les retours à la ligne */
+    word-break:break-word !important; /* casse les mots trop longs si besoin */
+    font-size:13px;
+    padding:12px 14px;
+  }
+}

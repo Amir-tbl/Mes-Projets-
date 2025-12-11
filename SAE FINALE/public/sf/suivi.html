@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Suivi des commandes — Service Financier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+  <style>
+    /* Corrections responsive pour page suivi commandes */
+
+    /* Limiter la largeur du contenu pour éviter le débordement */
+    .content {
+      max-width: 100%;
+      overflow-x: hidden;
+    }
+
+    /* Tableau compact */
+    .tableWrap {
+      width: 100%;
+      overflow-x: auto;
+      margin-top: 20px;
+    }
+
+    .dashboardTable {
+      width: 100%;
+      min-width: 865px; /* Correspond à la somme des min-width des colonnes */
+    }
+
+    /* KPIs - 5 colonnes responsive */
+    .content > .kpis {
+      grid-template-columns: repeat(5, 1fr);
+    }
+
+    /* Responsive amélioré */
+    @media (max-width: 1280px) {
+      .content > .kpis {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    @media (max-width: 768px) {
+      /* Filtres en colonne */
+      .card > div {
+        flex-direction: column;
+      }
+
+      .card > div > div {
+        width: 100% !important;
+        min-width: 100% !important;
+      }
+
+      /* KPIs en 2 colonnes */
+      .content > .kpis {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      /* Tableau - meilleur scroll horizontal */
+      .tableWrap {
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: thin;
+      }
+
+      .tableWrap::-webkit-scrollbar {
+        height: 8px;
+      }
+
+      .tableWrap::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 4px;
+      }
+
+      .tableWrap::-webkit-scrollbar-thumb {
+        background: #888;
+        border-radius: 4px;
+      }
+
+      /* Réduire padding des cellules sur mobile */
+      .dashboardTable th,
+      .dashboardTable td {
+        padding: 10px 12px;
+        font-size: 13px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      /* KPIs en 1 colonne sur petit mobile */
+      .content > .kpis {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 480px) {
+      /* Encore plus compact */
+      .dashboardTable th,
+      .dashboardTable td {
+        padding: 8px 10px;
+        font-size: 12px;
+      }
+
+      .kpi .value {
+        font-size: 32px;
+      }
+
+      .kpi .label {
+        font-size: 13px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="validation.html">
+          <span class="icon">✓</span> Commandes à valider
+        </a>
+        <a href="suivi.html" class="active">
+          <span class="icon">📊</span> Suivi commandes
+        </a>
+        <a href="fournisseurs.html">
+          <span class="icon">🏢</span> Fournisseurs
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">SUIVI DES COMMANDES</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher une commande" aria-label="Rechercher une commande">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Filtres -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+            <div style="flex: 1; min-width: 180px;">
+              <label for="filterStatut" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Statut</label>
+              <select id="filterStatut" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les statuts</option>
+                <option value="en_attente_validation">En attente validation</option>
+                <option value="en_attente_signature">En attente signature</option>
+                <option value="bc_envoye">BC envoyé</option>
+                <option value="expediee">Expédiée</option>
+                <option value="recue_iut">Reçue IUT</option>
+                <option value="livree">Livrée</option>
+                <option value="a_payer">À payer</option>
+                <option value="payee">Payée</option>
+                <option value="retard">En retard</option>
+                <option value="refusee">Refusée</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 180px;">
+              <label for="filterDateDebut" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Date début</label>
+              <input type="date" id="filterDateDebut" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div style="flex: 1; min-width: 180px;">
+              <label for="filterDateFin" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Date fin</label>
+              <input type="date" id="filterDateFin" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+            </div>
+            <div style="flex: 1; min-width: 180px;">
+              <label for="filterDepartement" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Département</label>
+              <select id="filterDepartement" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les départements</option>
+                <option value="informatique">Informatique</option>
+                <option value="gea">GEA</option>
+                <option value="tc">TC</option>
+                <option value="gb">GB</option>
+                <option value="administration">Administration</option>
+              </select>
+            </div>
+            <div style="padding-top: 24px;">
+              <button id="btnResetFilters" class="btn btn-ghost">Réinitialiser</button>
+              <button id="btnExport" class="btn" style="margin-left: 8px;">Exporter CSV</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpis" style="margin-bottom: 20px;">
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">156</div>
+            <div class="label">Total commandes</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiEnCours">45</div>
+            <div class="label">En cours</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiLivrees">98</div>
+            <div class="label">Livrées</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiRetards">8</div>
+            <div class="label">Retards</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiAPayer">13</div>
+            <div class="label">À payer</div>
+          </div>
+        </div>
+
+        <!-- Tableau des commandes -->
+        <div class="tableWrap">
+          <table class="dashboardTable">
+            <thead>
+              <tr>
+                <th style="min-width: 110px;">N° Cmd</th>
+                <th style="min-width: 120px;">Demandeur</th>
+                <th style="min-width: 100px;">Dépt.</th>
+                <th style="min-width: 120px;">Fournisseur</th>
+                <th style="min-width: 100px;">Montant</th>
+                <th style="min-width: 95px;">Date</th>
+                <th style="min-width: 140px;">Statut</th>
+                <th style="min-width: 60px; text-align:center;">PJ</th>
+                <th style="min-width: 120px; text-align:right; padding-right:16px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Rempli dynamiquement par JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal détails commande -->
+  <div id="modalDetails" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Détails de la commande</h2>
+        <button id="btnCloseModal" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalCommandeDetails" class="commande-details">
+          <!-- Détails de la commande -->
+        </div>
+
+        <!-- Actions rapides -->
+        <div id="actionsRapides" style="margin-top: 24px; padding: 16px; background: #f8f9fa; border-radius: 8px;">
+          <h4 style="margin: 0 0 12px 0;">Actions rapides</h4>
+          <div style="display: flex; gap: 12px; flex-wrap: wrap;">
+            <button id="btnEnvoyerBCFournisseur" class="btn">📧 Envoyer BC au fournisseur</button>
+            <button id="btnRelancerFournisseur" class="btn btn-ghost">🔔 Relancer fournisseur</button>
+            <button id="btnMarquerExpediee" class="btn btn-ghost">📦 Marquer expédiée</button>
+            <button id="btnDeclencherPaiement" class="btn">💰 Déclencher paiement</button>
+          </div>
+        </div>
+
+        <!-- Timeline statuts -->
+        <div style="margin-top: 24px;">
+          <h4 style="margin: 0 0 12px 0;">Historique des statuts</h4>
+          <div id="timeline" class="timeline">
+            <!-- Timeline générée dynamiquement -->
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnFermer" class="btn btn-ghost">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal envoi BC au fournisseur -->
+  <div id="modalEnvoiBC" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2>📧 Envoyer le BC au fournisseur</h2>
+        <button id="btnCloseModalEnvoi" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalEnvoiDetails" style="padding: 16px; background: #f0f9ff; border-left: 4px solid #0ea5e9; border-radius: 8px; margin-bottom: 20px;">
+          <!-- Détails de l'envoi -->
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label for="emailFournisseur" style="display: block; margin-bottom: 8px; font-weight: 600; color: #1E2A52;">
+            📧 Email du fournisseur <span style="color: #EF4444;">*</span>
+          </label>
+          <input
+            type="email"
+            id="emailFournisseur"
+            style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;"
+            placeholder="contact@fournisseur.fr"
+          />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label for="objetEmail" style="display: block; margin-bottom: 8px; font-weight: 600; color: #1E2A52;">
+            📋 Objet de l'email
+          </label>
+          <input
+            type="text"
+            id="objetEmail"
+            style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;"
+            value="Bon de commande signé - IUT Villetaneuse"
+          />
+        </div>
+
+        <div style="margin-bottom: 20px;">
+          <label for="messageEmail" style="display: block; margin-bottom: 8px; font-weight: 600; color: #1E2A52;">
+            ✍️ Message
+          </label>
+          <textarea
+            id="messageEmail"
+            rows="8"
+            style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit; resize: vertical;"
+          ></textarea>
+        </div>
+
+        <div style="padding: 16px; background: #fff3cd; border-left: 4px solid #fbbf24; border-radius: 8px;">
+          <div style="font-weight: 600; margin-bottom: 8px; color: #1E2A52;">📎 Pièce jointe</div>
+          <div style="color: #475569; font-size: 14px;">
+            Le bon de commande signé sera automatiquement joint à cet email.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnAnnulerEnvoi" class="btn btn-ghost">Annuler</button>
+        <button id="btnConfirmerEnvoi" class="btn">📧 Envoyer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal paiement fournisseur -->
+  <div id="modalPaiement" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content" style="max-width: 700px;">
+      <div class="modal-header">
+        <h2>💰 Paiement fournisseur</h2>
+        <button id="btnCloseModalPaiement" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <!-- Résumé commande -->
+        <div style="margin-bottom: 24px; padding: 16px; background: #f8f9fa; border-radius: 8px;">
+          <h4 style="margin: 0 0 12px 0; color: #1E2A52;">📦 Résumé de la commande</h4>
+          <div id="paiementResume" style="font-size: 14px;">
+            <!-- Résumé généré dynamiquement -->
+          </div>
+        </div>
+
+        <!-- Informations fournisseur -->
+        <div style="margin-bottom: 24px; padding: 20px; background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%); border: 2px solid #0ea5e9; border-radius: 12px;">
+          <h4 style="margin: 0 0 16px 0; color: #1E2A52;">🏢 Informations bancaires du fournisseur</h4>
+          <div id="paiementInfosFournisseur">
+            <!-- Infos fournisseur générées dynamiquement -->
+          </div>
+        </div>
+
+        <div style="padding: 16px; background: #fff3cd; border-left: 4px solid #fbbf24; border-radius: 8px;">
+          <div style="font-weight: 600; margin-bottom: 8px; color: #1E2A52;">ℹ️ Information</div>
+          <div style="color: #475569; font-size: 14px;">
+            Après avoir effectué le virement bancaire, cliquez sur "Marquer comme payé" pour mettre à jour le statut de la commande.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnAnnulerPaiement" class="btn btn-ghost">Annuler</button>
+        <button id="btnMarquerPaye" class="btn">✅ Marquer comme payé</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-sf-suivi.js"></script>
+</body>
+</html>

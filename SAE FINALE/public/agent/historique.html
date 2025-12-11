@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Historique — Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../assets/css/styles.css" />
+</head>
+<body class="page-historique">
+  <div class="app">
+    <!-- ================= Sidebar ================= -->
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+
+      <!-- Slot : la barre de recherche est déplacée ici en mobile par le JS -->
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+          <!-- ⬅️ Remplace l’emoji par ton icône (SVG/FontAwesome). -->
+        </a>
+        <a href="creer-envoi.html">
+          <span class="icon">📦</span> Créer un envoi
+        </a>
+        <a href="historique.html" class="active">
+          <span class="icon">🕒</span> Historique
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+
+    <!-- Overlay (mobile) -->
+    <div id="overlay" class="overlay" hidden></div>
+
+
+    <!-- ================= Main ================= -->
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+          <!-- ⬅️ Tu peux mettre ton icône menu.svg ici -->
+        </button>
+
+
+        <div class="title">HISTORIQUE</div>
+
+
+        <!-- Recherche globale (déplacée en mobile dans la sidebar) -->
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="globalSearch" type="text" placeholder="Rechercher (nom, n° colis…)" aria-label="Recherche globale">
+        </div>
+      </header>
+
+
+      <section class="content">
+        <!-- ================= Filtres (compacts, wrap) ================= -->
+        <div class="card filtersCard">
+          <form id="filters" class="filters" onsubmit="return false">
+            <div class="fblock">
+              <label for="dateFrom">Du</label>
+              <input type="date" id="dateFrom" />
+            </div>
+
+
+            <div class="fblock">
+              <label for="dateTo">Au</label>
+              <input type="date" id="dateTo" />
+            </div>
+
+
+            <div class="fblock">
+              <label for="status">Statut</label>
+              <select id="status">
+                <option value="">Tous</option>
+                <option value="En cours">En cours</option>
+                <option value="En attente">En attente</option>
+                <option value="Livré">Livré</option>
+                <option value="Retard">Retard</option>
+                <option value="Annulé">Annulé</option>
+              </select>
+            </div>
+
+
+
+
+            <div id="filterActions" class="factions">
+              <button id="exportCsv" class="btn" type="button">Exporter CSV</button>
+            </div>
+          </form>
+        </div>
+
+
+        <!-- ================= Tableau (scroll horizontal ENTIER) ================= -->
+        <div class="tableWrap">
+          <div class="tableCard">
+            <table id="historyTable">
+              <thead>
+                <tr>
+                  <th style="min-width: 130px; width: 130px;">N° Commande</th>
+                  <th style="min-width: 140px; width: 140px;">Demandeur</th>
+                  <th style="min-width: 130px; width: 130px;">Fournisseur</th>
+                  <th style="min-width: 110px; width: 110px;">Montant TTC</th>
+                  <th style="min-width: 100px; width: 100px;">Date</th>
+                  <th style="min-width: 100px; width: 100px;">Statut</th>
+                  <th style="min-width: 80px; width: 80px; text-align:center;">PJ</th>
+                  <th style="min-width: 120px; width: 120px; text-align:right; padding-right:24px;">Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                <!-- Exemples de lignes -->
+                <tr>
+                  <td data-col="numero"><strong>#BC-2025-1001</strong></td>
+                  <td data-col="demandeur">Butelle Franck</td>
+                  <td data-col="fournisseur">Dell</td>
+                  <td data-col="montant">18 540 €</td>
+                  <td data-col="date" data-iso="2025-01-10">10/01/25</td>
+                  <td data-col="statut"><span class="badge b-blue">En cours</span></td>
+                  <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 2</span></td>
+                  <td style="text-align:right; padding-right:24px;"><button class="btn-ghost" onclick="afficherDetailsCommande('BC-2025-1001')">👁️ Voir</button></td>
+                </tr>
+                <tr>
+                  <td data-col="numero"><strong>#BC-2025-0998</strong></td>
+                  <td data-col="demandeur">Martin Sophie</td>
+                  <td data-col="fournisseur">LDLC</td>
+                  <td data-col="montant">2 450 €</td>
+                  <td data-col="date" data-iso="2025-01-08">08/01/25</td>
+                  <td data-col="statut"><span class="badge b-grey">En attente</span></td>
+                  <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #f3f4f6; color: #9ca3af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 0</span></td>
+                  <td style="text-align:right; padding-right:24px;"><button class="btn-ghost" onclick="afficherDetailsCommande('BC-2025-0998')">👁️ Voir</button></td>
+                </tr>
+                <tr>
+                  <td data-col="numero"><strong>#BC-2025-0985</strong></td>
+                  <td data-col="demandeur">Dupont Jean</td>
+                  <td data-col="fournisseur">Amazon Business</td>
+                  <td data-col="montant">850 €</td>
+                  <td data-col="date" data-iso="2025-01-05">05/01/25</td>
+                  <td data-col="statut"><span class="badge b-green">Livré</span></td>
+                  <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 1</span></td>
+                  <td style="text-align:right; padding-right:24px;"><button class="btn-ghost" onclick="afficherDetailsCommande('BC-2025-0985')">👁️ Voir</button></td>
+                </tr>
+                <tr>
+                  <td data-col="numero"><strong>#BC-2025-0970</strong></td>
+                  <td data-col="demandeur">Rousseau Anne</td>
+                  <td data-col="fournisseur">HP France</td>
+                  <td data-col="montant">3 200 €</td>
+                  <td data-col="date" data-iso="2025-01-02">02/01/25</td>
+                  <td data-col="statut"><span class="badge b-red">Retard</span></td>
+                  <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #f3f4f6; color: #9ca3af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 0</span></td>
+                  <td style="text-align:right; padding-right:24px;"><button class="btn-ghost" onclick="afficherDetailsCommande('BC-2025-0970')">👁️ Voir</button></td>
+                </tr>
+                <tr>
+                  <td data-col="numero"><strong>#BC-2025-0955</strong></td>
+                  <td data-col="demandeur">Garcia Pablo</td>
+                  <td data-col="fournisseur">Bureau Vallée</td>
+                  <td data-col="montant">620 €</td>
+                  <td data-col="date" data-iso="2024-12-28">28/12/24</td>
+                  <td data-col="statut"><span class="badge b-green">Livré</span></td>
+                  <td style="text-align:center;"><span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: #dbeafe; color: #1e40af; border-radius: 12px; font-size: 12px; font-weight: 600;">📎 1</span></td>
+                  <td style="text-align:right; padding-right:24px;"><button class="btn-ghost" onclick="afficherDetailsCommande('BC-2025-0955')">👁️ Voir</button></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <!-- ================= /Tableau ================= -->
+
+
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Détails Commande -->
+  <div id="modalDetails" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalDetailsTitle">Détails de la commande</h2>
+        <button id="btnCloseModalDetails" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalDetailsContent" class="commande-details">
+          <!-- Détails remplis dynamiquement -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnFermerDetails" class="btn btn-ghost">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JS commun (burger + recherche mobile) -->
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-agent.js"></script>
+  <!-- JS dédié Historique (filtres + export CSV) -->
+  <script src="../assets/js/app-historique.js"></script>
+</body>
+</html>
+
+

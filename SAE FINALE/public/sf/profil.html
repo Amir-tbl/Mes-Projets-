@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Mon Profil — Service Financier</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <!-- Slot : recherche déplacée ici en mobile -->
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="validation.html">
+          <span class="icon">✓</span> Commandes à valider
+        </a>
+        <a href="suivi.html">
+          <span class="icon">📊</span> Suivi commandes
+        </a>
+        <a href="fournisseurs.html">
+          <span class="icon">🏢</span> Fournisseurs
+        </a>
+        <a href="profil.html" class="active">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <!-- Overlay foncé derrière la sidebar en mobile -->
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">MON PROFIL</div>
+
+        <!-- Barre de recherche -->
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher une commande" aria-label="Rechercher une commande">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Carte principale du profil -->
+        <div class="card profile-header">
+          <div class="profile-avatar">
+            <div class="avatar-placeholder">
+              <span class="avatar-initials" id="avatarInitials">BF</span>
+            </div>
+          </div>
+          <div class="profile-info">
+            <h2 class="profile-name" id="profileName">Butelle Franck</h2>
+            <p class="profile-role" id="profileRole">Agent — Service Informatique</p>
+            <p class="profile-email" id="profileEmail">franck.butelle@univ-paris13.fr</p>
+          </div>
+          <div class="profile-actions">
+            <button class="btn" id="btnLogout">Se déconnecter</button>
+          </div>
+        </div>
+
+        <!-- Grille d'informations -->
+        <div class="profile-grid">
+          <!-- Informations personnelles -->
+          <div class="card profile-section">
+            <h3 class="section-title">Informations personnelles</h3>
+            <dl class="info-list">
+              <div class="info-item">
+                <dt>Nom complet</dt>
+                <dd id="fullName">Butelle Franck</dd>
+              </div>
+              <div class="info-item">
+                <dt>Numéro étudiant/personnel</dt>
+                <dd id="studentId">21234567</dd>
+              </div>
+              <div class="info-item">
+                <dt>Date de naissance</dt>
+                <dd id="birthDate">15 mars 1985</dd>
+              </div>
+              <div class="info-item">
+                <dt>Téléphone</dt>
+                <dd id="phone">+33 1 49 40 40 40</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Informations professionnelles -->
+          <div class="card profile-section">
+            <h3 class="section-title">Informations professionnelles</h3>
+            <dl class="info-list">
+              <div class="info-item">
+                <dt>Rôle</dt>
+                <dd id="role">Agent</dd>
+              </div>
+              <div class="info-item">
+                <dt>Département</dt>
+                <dd id="department">Informatique</dd>
+              </div>
+              <div class="info-item">
+                <dt>Service</dt>
+                <dd id="service">Gestion des colis</dd>
+              </div>
+              <div class="info-item">
+                <dt>Date d'arrivée</dt>
+                <dd id="joinDate">1 septembre 2020</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Adresse -->
+          <div class="card profile-section">
+            <h3 class="section-title">Adresse</h3>
+            <dl class="info-list">
+              <div class="info-item">
+                <dt>Campus</dt>
+                <dd id="campus">Villetaneuse</dd>
+              </div>
+              <div class="info-item">
+                <dt>Bâtiment</dt>
+                <dd id="building">Institut Galilée</dd>
+              </div>
+              <div class="info-item">
+                <dt>Bureau</dt>
+                <dd id="office">B210</dd>
+              </div>
+              <div class="info-item">
+                <dt>Adresse complète</dt>
+                <dd id="address">99 Avenue Jean-Baptiste Clément<br>93430 Villetaneuse</dd>
+              </div>
+            </dl>
+          </div>
+
+          <!-- Statistiques -->
+          <div class="card profile-section">
+            <h3 class="section-title">Mes statistiques</h3>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-value" id="statTotal">156</div>
+                <div class="stat-label">Colis traités</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="statMonth">23</div>
+                <div class="stat-label">Ce mois-ci</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="statPending">4</div>
+                <div class="stat-label">En attente</div>
+              </div>
+              <div class="stat-item">
+                <div class="stat-value" id="statAvgTime">2.3j</div>
+                <div class="stat-label">Délai moyen</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Paramètres de compte -->
+        <div class="card profile-settings">
+          <h3 class="section-title">Paramètres du compte</h3>
+          <div class="settings-list">
+            <div class="setting-item">
+              <div class="setting-info">
+                <strong>Notifications par email</strong>
+                <p class="muted">Recevoir des notifications pour les nouveaux colis</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notifEmail" checked>
+                <span class="slider"></span>
+              </label>
+            </div>
+            <div class="setting-item">
+              <div class="setting-info">
+                <strong>Notifications push</strong>
+                <p class="muted">Recevoir des notifications sur le navigateur</p>
+              </div>
+              <label class="switch">
+                <input type="checkbox" id="notifPush">
+                <span class="slider"></span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/app-profil-sf.js"></script>
+</body>
+</html>

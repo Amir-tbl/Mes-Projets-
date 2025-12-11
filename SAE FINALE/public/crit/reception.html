@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+  <title>Réception colis — Service Postal CRIT</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/styles.css">
+</head>
+<body>
+  <div class="app">
+    <aside id="sidebar" class="sidebar" aria-hidden="true">
+      <div class="logoBox">
+        <span class="logoWordmark" aria-label="Logo Université Sorbonne Paris Nord"></span>
+        <img src="../assets/img/logo.png" alt="Université Sorbonne Paris Nord" class="logoImg">
+      </div>
+
+      <div id="navSearchSlot" class="navSearchSlot" aria-hidden="true"></div>
+
+      <nav class="nav" aria-label="Navigation principale">
+        <a href="index.html">
+          <span class="icon">🏠</span> Tableau de bord
+        </a>
+        <a href="reception.html" class="active">
+          <span class="icon">📦</span> Réception colis
+        </a>
+        <a href="distribution.html">
+          <span class="icon">🚚</span> Distribution
+        </a>
+        <a href="historique.html">
+          <span class="icon">📋</span> Historique
+        </a>
+        <a href="profil.html">
+          <span class="icon">👤</span> Profil
+        </a>
+      </nav>
+    </aside>
+
+    <div id="overlay" class="overlay" hidden></div>
+
+    <main class="main">
+      <header class="topbar">
+        <button id="burger" class="burger" aria-label="Ouvrir le menu" aria-controls="sidebar" aria-expanded="false">
+          <span class="i-burger" aria-hidden="true"></span>
+        </button>
+
+        <div class="title">RÉCEPTION COLIS</div>
+
+        <div id="topSearch" class="search" role="search">
+          <span class="search-icon" aria-hidden="true"></span>
+          <input id="searchInput" type="text" placeholder="Rechercher un colis" aria-label="Rechercher un colis">
+        </div>
+      </header>
+
+      <section class="content">
+        <!-- Filtres -->
+        <div class="card" style="margin-bottom: 20px;">
+          <div style="display: flex; gap: 16px; flex-wrap: wrap; align-items: center;">
+            <div style="flex: 1; min-width: 200px;">
+              <label for="filterDepartement" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Département</label>
+              <select id="filterDepartement" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les départements</option>
+                <option value="Informatique">Informatique</option>
+                <option value="GEA">GEA</option>
+                <option value="TC">TC</option>
+                <option value="GB">GB</option>
+                <option value="Administration">Administration</option>
+              </select>
+            </div>
+            <div style="flex: 1; min-width: 200px;">
+              <label for="filterFournisseur" style="display: block; margin-bottom: 4px; font-weight: 600; color: #1E2A52;">Fournisseur</label>
+              <select id="filterFournisseur" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px;">
+                <option value="">Tous les fournisseurs</option>
+                <option value="LDLC">LDLC</option>
+                <option value="Amazon">Amazon Business</option>
+                <option value="Dell">Dell</option>
+                <option value="HP">HP</option>
+                <option value="Microsoft">Microsoft</option>
+              </select>
+            </div>
+            <div style="padding-top: 24px;">
+              <button id="btnResetFilters" class="btn btn-ghost">Réinitialiser</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- KPI -->
+        <div class="kpis" style="margin-bottom: 20px;">
+          <div class="card kpi">
+            <div class="value" id="kpiTotal">0</div>
+            <div class="label">Total en attente</div>
+          </div>
+          <div class="card kpi">
+            <div class="value" id="kpiRecusAujourdhui">0</div>
+            <div class="label">Reçus aujourd'hui</div>
+          </div>
+        </div>
+
+        <!-- Tableau des colis -->
+        <div class="tableWrap">
+          <table class="dashboardTable">
+            <thead>
+              <tr>
+                <th style="min-width: 120px; width: 120px;">N° Commande</th>
+                <th style="min-width: 130px; width: 130px;">Destinataire</th>
+                <th style="min-width: 95px; width: 95px;">Départ.</th>
+                <th style="min-width: 120px; width: 120px;">Fournisseur</th>
+                <th style="min-width: 160px; width: 160px;">N° Suivi</th>
+                <th style="min-width: 90px; width: 90px;">Date exp.</th>
+                <th style="min-width: 70px; width: 70px;">Transit</th>
+                <th style="min-width: 80px; width: 80px; text-align:center;">PJ</th>
+                <th style="min-width: 160px; width: 160px; text-align:right; padding-right:16px;">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tableBody">
+              <!-- Rempli dynamiquement par JS -->
+            </tbody>
+          </table>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- Modal Détails (lecture seule) -->
+  <div id="modalDetails" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalDetailsTitle">Détails du colis</h2>
+        <button id="btnCloseModalDetails" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalDetailsContent" class="commande-details">
+          <!-- Détails du colis -->
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnFermerDetails" class="btn btn-ghost">Fermer</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal de réception -->
+  <div id="modalReception" class="modal" hidden>
+    <div class="modal-overlay"></div>
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Réceptionner le colis</h2>
+        <button id="btnCloseModal" class="modal-close" aria-label="Fermer">&times;</button>
+      </div>
+      <div class="modal-body">
+        <div id="modalColisDetails" class="commande-details">
+          <!-- Détails du colis -->
+        </div>
+
+        <div style="margin-top: 24px; padding: 16px; background: #f0f9ff; border-left: 4px solid #0ea5e9; border-radius: 4px;">
+          <div style="font-weight: 600; margin-bottom: 8px; color: #1E2A52;">ℹ️ Vérification</div>
+          <div style="color: #475569; font-size: 14px;">
+            Avant de confirmer la réception, vérifiez que :
+            <ul style="margin: 8px 0 0 0; padding-left: 20px;">
+              <li>Le numéro de suivi correspond</li>
+              <li>Le colis n'est pas endommagé</li>
+              <li>Le destinataire est correct</li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="margin-top: 24px;">
+          <label style="display: flex; align-items: center; gap: 8px; cursor: pointer;">
+            <input type="checkbox" id="checkboxAnomalies">
+            <span style="font-weight: 600; color: #1E2A52;">Signaler une anomalie (colis endommagé, erreur, etc.)</span>
+          </label>
+        </div>
+
+        <div id="anomaliesSection" style="display: none; margin-top: 16px;">
+          <label for="typeAnomalie" style="display: block; margin-bottom: 4px; font-weight: 600;">Type d'anomalie</label>
+          <select id="typeAnomalie" style="width: 100%; padding: 8px 12px; border: 1px solid #ddd; border-radius: 8px; margin-bottom: 12px;">
+            <option value="">Sélectionner...</option>
+            <option value="endommage">Colis endommagé</option>
+            <option value="incomplet">Colis incomplet</option>
+            <option value="erreur_destinataire">Erreur de destinataire</option>
+            <option value="erreur_contenu">Erreur de contenu</option>
+            <option value="autre">Autre</option>
+          </select>
+
+          <label for="descriptionAnomalie" style="display: block; margin-bottom: 4px; font-weight: 600;">Description de l'anomalie</label>
+          <textarea id="descriptionAnomalie" rows="3" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;" placeholder="Décrivez le problème constaté..."></textarea>
+        </div>
+
+        <div style="margin-top: 16px;">
+          <label for="commentaireReception" style="display: block; margin-bottom: 8px; font-weight: 600;">Commentaire (optionnel)</label>
+          <textarea id="commentaireReception" rows="3" style="width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; font-family: inherit;" placeholder="Ajouter un commentaire..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button id="btnAnnuler" class="btn btn-ghost">Annuler</button>
+        <button id="btnConfirmer" class="btn">✅ Confirmer la réception</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../assets/js/common.js"></script>
+  <script src="../assets/js/commandes-manager.js"></script>
+  <script src="../assets/js/app-crit-reception.js"></script>
+</body>
+</html>
